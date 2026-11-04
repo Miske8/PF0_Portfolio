@@ -1,0 +1,2506 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cahier des charges — Site portfolio développeur web &amp; application</title>
+<meta name="description" content="Cahier des charges contractuel bilingue FR/EN pour un site portfolio développeur web et application.">
+<style>
+:root {
+  --ink: #16181d;
+  --muted: #5b6472;
+  --line: #dfe3ea;
+  --accent: #1d4ed8;
+  --accent-soft: #eef2ff;
+  --bg-soft: #f7f8fa;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.55;
+  color: var(--ink);
+  background: #fff;
+}
+.page { max-width: 860px; margin: 0 auto; padding: 0 32px 64px; }
+
+/* ---------- Couverture ---------- */
+.cover {
+  min-height: 96vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 56px 0 40px;
+  page-break-after: always;
+  break-after: page;
+}
+.cover h1 {
+  font-size: 30pt;
+  line-height: 1.15;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+  border: 0;
+  padding: 0;
+  color: var(--ink);
+  page-break-before: avoid;
+  break-before: avoid;
+}
+.cover::before {
+  content: "Cahier des charges";
+  display: block;
+  font-size: 9pt;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+.cover hr { display: none; }
+.cover p {
+  margin: 16px 0 0; color: var(--muted); font-size: 10.5pt; line-height: 2;
+  padding-left: 132px; text-indent: -132px;
+}
+.cover p strong {
+  display: inline-block; min-width: 132px; color: var(--ink);
+  font-weight: 600; letter-spacing: 0.01em;
+}
+.cover-meta {
+  margin-top: 36px; padding-top: 14px; border-top: 2px solid var(--line);
+  display: flex; justify-content: space-between; gap: 16px;
+  font-size: 8.5pt; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+/* ---------- Titres ---------- */
+h1 {
+  font-size: 19pt;
+  margin: 44px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--accent);
+  letter-spacing: -0.01em;
+  page-break-before: always;
+  break-before: page;
+}
+h1.part {
+  page-break-before: always;
+  break-before: page;
+  margin-top: 0;
+  color: var(--accent);
+}
+/* Le titre de la Partie II doit démarrer sur une nouvelle page (règle h1). */
+h2 {
+  font-size: 13.5pt;
+  margin: 30px 0 10px;
+  padding-left: 10px;
+  border-left: 4px solid var(--accent);
+  page-break-after: avoid;
+  break-after: avoid;
+}
+h3 { font-size: 11.5pt; margin: 22px 0 8px; color: var(--muted); page-break-after: avoid; break-after: avoid; }
+
+/* ---------- Tableaux ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0 20px;
+  font-size: 9.2pt;
+  page-break-inside: auto;
+}
+thead { display: table-header-group; }
+tr { page-break-inside: avoid; break-inside: avoid; }
+th {
+  background: var(--accent-soft);
+  color: #1e3a8a;
+  text-align: left;
+  font-weight: 700;
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  font-size: 8.8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+td { padding: 7px 9px; border: 1px solid var(--line); vertical-align: top; }
+tbody tr:nth-child(even) td { background: var(--bg-soft); }
+
+/* ---------- Blocs ---------- */
+blockquote {
+  margin: 16px 0;
+  padding: 10px 16px;
+  border-left: 4px solid var(--accent);
+  background: var(--accent-soft);
+  color: #1e293b;
+  page-break-inside: avoid;
+}
+blockquote p { margin: 0; }
+code { background: var(--bg-soft); padding: 1px 5px; border-radius: 3px; font-size: 9pt; }
+pre {
+  background: #0f172a; color: #e2e8f0; padding: 14px 16px; border-radius: 6px;
+  overflow-x: auto; font-size: 9pt; page-break-inside: avoid;
+}
+pre code { background: none; color: inherit; padding: 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 28px 0; }
+a { color: var(--accent); text-decoration: none; }
+ul, ol { padding-left: 22px; }
+li { margin: 4px 0; }
+strong { font-weight: 700; }
+
+/* ---------- Table des matières ---------- */
+.toc { page-break-after: always; break-after: page; }
+.toc h2 { border-left: 0; padding-left: 0; font-size: 16pt; margin-top: 0; }
+.toc ol { list-style: none; padding: 0; counter-reset: toc; }
+.toc li { counter-increment: toc; padding: 5px 0; border-bottom: 1px dotted var(--line); font-size: 10pt; }
+.toc li::before { content: counter(toc) ". "; color: var(--muted); }
+.toc li.toc-part { font-weight: 700; color: var(--accent); margin-top: 12px; }
+.toc a { color: inherit; }
+
+/* ---------- Pied de page ---------- */
+.doc-footer {
+  margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line);
+  font-size: 8.5pt; color: var(--muted); text-align: center;
+}
+
+@page {
+  size: A4;
+  margin: 18mm 16mm 20mm;
+}
+@media print {
+  body { font-size: 10pt; }
+  .page { max-width: none; padding: 0; }
+  .cover { min-height: auto; padding-top: 40mm; }
+  h1 { margin-top: 0; }
+  a { color: var(--ink); }
+  .no-print { display: none !important; }
+}
+@media screen {
+  .toolbar {
+    position: sticky; top: 0; z-index: 10;
+    background: #0f172a; color: #fff; padding: 10px 16px;
+    font-size: 9.5pt; display: flex; gap: 12px; align-items: center; justify-content: center;
+  }
+  .toolbar button {
+    font: inherit; padding: 6px 14px; border-radius: 6px; border: 0;
+    background: #2563eb; color: #fff; cursor: pointer;
+  }
+  body { padding-top: 0; }
+}
+</style>
+</head>
+<body>
+<div class="toolbar no-print">
+  <span>Version imprimable — utilisez « Imprimer » puis « Enregistrer au format PDF ».</span>
+  <button onclick="window.print()">Imprimer / PDF</button>
+</div>
+<div class="page">
+  <section class="cover"><h1>Cahier des charges — Site portfolio développeur web &amp; application</h1>
+<p><strong>Référence :</strong> CDC-PORTFOLIO-2025-01<br><strong>Version :</strong> 1.0 — document de cadrage contractuel<br><strong>Parties :</strong> Le Client (ci-après « le Client ») / Le Prestataire (ci-après « le Prestataire »)<br><strong>Objet :</strong> Conception, développement, mise en ligne et documentation d&#39;un site portfolio bilingue français / anglais.</p>
+
+
+    <div class="cover-meta">
+      <span>Cahier des charges — document contractuel</span>
+      <span>Émis le 24 septembre 2026</span>
+    </div>
+  </section>
+  <nav class="toc">
+    <h2>Table des matières</h2>
+    <ol><li class=""><a href="#s1">Page de garde — Fiche d&#39;identification</a></li>
+<li class=""><a href="#s2">1. Synthèse exécutive</a></li>
+<li class=""><a href="#s3">2. Contexte et objectifs</a></li>
+<li class=""><a href="#s4">3. Périmètre du projet</a></li>
+<li class=""><a href="#s5">4. Publics cibles et parcours utilisateurs</a></li>
+<li class=""><a href="#s6">5. Spécifications fonctionnelles détaillées</a></li>
+<li class=""><a href="#s7">6. Exigences non fonctionnelles</a></li>
+<li class=""><a href="#s8">7. Stack technique recommandée</a></li>
+<li class=""><a href="#s9">8. Contenus à fournir par le Client</a></li>
+<li class=""><a href="#s10">9. Design et expérience utilisateur</a></li>
+<li class=""><a href="#s11">10. Planning prévisionnel</a></li>
+<li class=""><a href="#s12">11. Budget estimatif</a></li>
+<li class=""><a href="#s13">12. Gestion des risques</a></li>
+<li class=""><a href="#s14">13. Critères de réussite et recette</a></li>
+<li class=""><a href="#s15">14. Livrables attendus</a></li>
+<li class=""><a href="#s16">15. Options complémentaires</a></li>
+<li class=""><a href="#s17">16. Validation et signatures</a></li>
+<li class="toc-part"><a href="#s18">Part II — English Version</a></li>
+<li class=""><a href="#s19">E1. Executive summary</a></li>
+<li class=""><a href="#s20">E2. Scope</a></li>
+<li class=""><a href="#s21">E3. Functional requirements</a></li>
+<li class=""><a href="#s22">E4. Non-functional requirements</a></li>
+<li class=""><a href="#s23">E5. Recommended technical stack</a></li>
+<li class=""><a href="#s24">E6. Timeline</a></li>
+<li class=""><a href="#s25">E7. Budget</a></li>
+<li class=""><a href="#s26">E8. Success criteria</a></li>
+<li class=""><a href="#s27">E9. English validation</a></li></ol>
+  </nav>
+  <h2 id="s1">Page de garde — Fiche d&#39;identification</h2>
+<table>
+<thead>
+<tr>
+<th>Rubrique</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Nom du projet</td>
+<td>Portfolio Développeur Web &amp; Application</td>
+</tr>
+<tr>
+<td>Référence</td>
+<td>CDC-PORTFOLIO-2025-01</td>
+</tr>
+<tr>
+<td>Version du document</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Date d&#39;émission</td>
+<td>............................</td>
+</tr>
+<tr>
+<td>Type de projet</td>
+<td>Site vitrine professionnel bilingue (FR / EN)</td>
+</tr>
+<tr>
+<td>Nature du contrat</td>
+<td>Prestation de service — conception et développement web</td>
+</tr>
+<tr>
+<td>Client</td>
+<td>Nom / Raison sociale : ............................ <br> Adresse : ............................ <br> SIRET : ............................ <br> Représenté par : ............................</td>
+</tr>
+<tr>
+<td>Prestataire</td>
+<td>Nom / Raison sociale : ............................ <br> Adresse : ............................ <br> SIRET : ............................ <br> Représenté par : ............................</td>
+</tr>
+<tr>
+<td>Contact projet</td>
+<td>E-mail : ............................ <br> Téléphone : ............................</td>
+</tr>
+<tr>
+<td>Hébergement cible</td>
+<td>o2switch — hébergement mutualisé (Apache / PHP / MySQL)</td>
+</tr>
+<tr>
+<td>Domaine</td>
+<td>............................ (à réserver ou à confirmer)</td>
+</tr>
+<tr>
+<td>Budget de l&#39;option retenue</td>
+<td>............................ € HT</td>
+</tr>
+<tr>
+<td>Durée prévisionnelle</td>
+<td>7 semaines à compter de la réception de l&#39;acompte et des contenus</td>
+</tr>
+<tr>
+<td>Statut</td>
+<td>☐ Projet de cadrage  ☐ Validé par le Client  ☐ Signé</td>
+</tr>
+</tbody></table>
+<h3>Historique des versions</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Auteur</th>
+<th>Nature de la modification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0.1</td>
+<td>—</td>
+<td>Prestataire</td>
+<td>Reprise du brief initial</td>
+</tr>
+<tr>
+<td>1.0</td>
+<td>—</td>
+<td>Prestataire</td>
+<td>Version professionnelle complète, prête à signature</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3>Documents de référence</h3>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Statut</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Brief initial « Site portfolio développeur web et application »</td>
+<td>Fourni par le Client</td>
+</tr>
+<tr>
+<td>Présent cahier des charges</td>
+<td>Version contractuelle de référence</td>
+</tr>
+<tr>
+<td>Maquettes graphiques (Figma)</td>
+<td>À produire — validées au jalon V2</td>
+</tr>
+<tr>
+<td>Charte éditoriale et contenus FR/EN</td>
+<td>À fournir par le Client</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="s2">1. Synthèse exécutive</h2>
+<p>Le présent projet consiste à concevoir, développer et mettre en ligne un site portfolio professionnel bilingue (français / anglais) destiné à présenter le profil, les compétences et les réalisations d&#39;un développeur web et application.</p>
+<p>Le site doit remplir trois missions simultanées :</p>
+<ol>
+<li><strong>Crédibiliser</strong> — offrir une image professionnelle, moderne et soignée, à la hauteur du niveau technique du profil présenté.</li>
+<li><strong>Démontrer</strong> — exposer les projets avec un niveau de détail professionnel (contexte, objectifs, stack, fonctionnalités, rôle, résultats) plutôt que sous forme de simple galerie.</li>
+<li><strong>Convertir</strong> — transformer une visite en prise de contact qualifiée (recruteur, client freelance, entreprise, partenaire).</li>
+</ol>
+<p><strong>Facteurs clés de succès :</strong> rapidité d&#39;accès à l&#39;information (moins de 3 clics pour atteindre une prise de contact), cohérence stricte des versions FR et EN, performance de chargement, accessibilité, et facilité d&#39;ajout de nouveaux projets sans intervention technique.</p>
+<p><strong>Synthèse budgétaire :</strong> trois scénarios sont proposés (§ 11), de 4 400 € HT (vitrine essentielle) à 14 400 € HT (portfolio complet avec blog, CMS et prise de rendez-vous). Le scénario recommandé est le <strong>scénario B — Portfolio complet bilingue</strong>, estimé entre 21 et 24 jours-homme.</p>
+<hr>
+<h2 id="s3">2. Contexte et objectifs</h2>
+<h3>2.1 Contexte</h3>
+<p>Le Client souhaite disposer d&#39;un site vitrine personnel servant à la fois d&#39;outil de visibilité professionnelle, de vitrine de projets et de point de contact unique pour des opportunités d&#39;emploi, de mission freelance ou de collaboration technique. À ce jour, aucun site n&#39;existe : le projet est créé intégralement.</p>
+<p>Le site s&#39;inscrit dans une démarche de recherche d&#39;opportunités (CDI, CDD, mission, freelance) et doit donc être immédiatement lisible par des profils non techniques (recruteurs, responsables RH) tout en satisfaisant un lectorat technique (développeurs, lead techs) qui évaluera la qualité d&#39;exécution.</p>
+<h3>2.2 Objectifs</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Objectif</th>
+<th>Indicateur de réussite</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>O1</td>
+<td>Présenter clairement le profil du développeur</td>
+<td>Un recruteur comprend le positionnement en moins de 30 secondes sur la page d&#39;accueil</td>
+</tr>
+<tr>
+<td>O2</td>
+<td>Mettre en valeur les compétences et technologies maîtrisées</td>
+<td>Section compétences structurée par domaine (front, back, outils, soft skills)</td>
+</tr>
+<tr>
+<td>O3</td>
+<td>Exposer les projets avec un niveau de détail professionnel</td>
+<td>Chaque projet dispose d&#39;une fiche complète et d&#39;au moins un visuel</td>
+</tr>
+<tr>
+<td>O4</td>
+<td>Renforcer la crédibilité par le design et l&#39;UX</td>
+<td>Score Lighthouse ≥ 90 sur les 4 catégories, cohérence graphique inter-sections</td>
+</tr>
+<tr>
+<td>O5</td>
+<td>Faciliter la prise de contact</td>
+<td>Formulaire opérationnel + e-mail + réseaux sociaux accessibles depuis chaque page</td>
+</tr>
+<tr>
+<td>O6</td>
+<td>Offrir une version FR et une version EN</td>
+<td>100 % des contenus éditoriaux traduits, parité de structure vérifiée</td>
+</tr>
+<tr>
+<td>O7</td>
+<td>Permettre une mise à jour autonome</td>
+<td>Ajout d&#39;un projet en moins de 15 minutes sans compétence technique</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="s4">3. Périmètre du projet</h2>
+<h3>3.1 Inclus dans le périmètre (in scope)</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Élément inclus</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S1</td>
+<td>Atelier de cadrage (1 session de 1 h 30) et validation de l&#39;arborescence</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>Wireframes basse fidélité des gabarits principaux</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>Direction artistique et maquettes haute fidélité (desktop + mobile)</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>Design system : couleurs, typographies, espacements, composants, états</td>
+</tr>
+<tr>
+<td>S5</td>
+<td>Développement des gabarits : Accueil, À propos, Compétences, Projets, Fiche projet, Services, CV, Contact, 404</td>
+</tr>
+<tr>
+<td>S6</td>
+<td>Système de gestion de projets par fichiers de contenu (ajout/modification/suppression sans code)</td>
+</tr>
+<tr>
+<td>S7</td>
+<td>Internationalisation FR / EN avec sélecteur de langue et URLs distinctes</td>
+</tr>
+<tr>
+<td>S8</td>
+<td>Formulaire de contact fonctionnel, avec anti-spam et accusé de réception</td>
+</tr>
+<tr>
+<td>S9</td>
+<td>Téléchargement du CV en PDF, en version française et anglaise</td>
+</tr>
+<tr>
+<td>S10</td>
+<td>Optimisation SEO technique : balises, sitemap, robots.txt, données structurées, Open Graph</td>
+</tr>
+<tr>
+<td>S11</td>
+<td>Accessibilité : conformité visée WCAG 2.1 niveau AA sur les parcours principaux</td>
+</tr>
+<tr>
+<td>S12</td>
+<td>Optimisation des performances (images responsives, formats modernes, budget de performance)</td>
+</tr>
+<tr>
+<td>S13</td>
+<td>Tests responsive (mobile, tablette, desktop), tests navigateurs, recette client</td>
+</tr>
+<tr>
+<td>S14</td>
+<td>Déploiement sur l&#39;hébergement o2switch, configuration du domaine et du certificat SSL</td>
+</tr>
+<tr>
+<td>S15</td>
+<td>Installation d&#39;un outil de mesure d&#39;audience respectueux de la vie privée</td>
+</tr>
+<tr>
+<td>S16</td>
+<td>Documentation de mise à jour du contenu (FR et EN)</td>
+</tr>
+<tr>
+<td>S17</td>
+<td>Session de transfert de compétences (1 h) en visioconférence</td>
+</tr>
+</tbody></table>
+<h3>3.2 Exclu du périmètre (out of scope)</h3>
+<p>Sauf avenant écrit et chiffré séparément, les éléments suivants ne sont <strong>pas</strong> inclus :</p>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Élément exclu</th>
+<th>Option associée</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X1</td>
+<td>Rédaction complète des contenus éditoriaux</td>
+<td>Option O7</td>
+</tr>
+<tr>
+<td>X2</td>
+<td>Traduction professionnelle FR → EN si le contenu source n&#39;est pas fourni</td>
+<td>Option O8</td>
+</tr>
+<tr>
+<td>X3</td>
+<td>Création de l&#39;identité visuelle, du logo ou de la charte graphique</td>
+<td>Option O9</td>
+</tr>
+<tr>
+<td>X4</td>
+<td>Création de visuels, captures d&#39;écran, mockups ou photographies</td>
+<td>Option O10</td>
+</tr>
+<tr>
+<td>X5</td>
+<td>Développement d&#39;une application métier, d&#39;un back-office sur mesure ou d&#39;une API privée</td>
+<td>Sur devis</td>
+</tr>
+<tr>
+<td>X6</td>
+<td>Blog technique éditorial et gestion de contenu avancée</td>
+<td>Options O1 et O4</td>
+</tr>
+<tr>
+<td>X7</td>
+<td>Système de prise de rendez-vous en ligne</td>
+<td>Option O6</td>
+</tr>
+<tr>
+<td>X8</td>
+<td>Réservation du nom de domaine et frais d&#39;hébergement (réglés directement par le Client)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>X9</td>
+<td>Maintenance et mises à jour après la période de garantie</td>
+<td>Contrat de maintenance</td>
+</tr>
+<tr>
+<td>X10</td>
+<td>Rédaction des mentions légales, CGV, politique de confidentialité (assistance fournie)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>X11</td>
+<td>Référencement payant (SEA) et campagnes d&#39;acquisition</td>
+<td>Sur devis</td>
+</tr>
+<tr>
+<td>X12</td>
+<td>Reprise ou migration d&#39;un site existant</td>
+<td>Sur devis</td>
+</tr>
+</tbody></table>
+<h3>3.3 Prérequis et responsabilités du Client</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Engagement du Client</th>
+<th>Échéance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P1</td>
+<td>Fournir l&#39;ensemble des contenus listés au § 8</td>
+<td>Semaine 1</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Désigner un interlocuteur unique décisionnaire</td>
+<td>Semaine 1</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>Réserver le nom de domaine et l&#39;hébergement o2switch</td>
+<td>Semaine 1</td>
+</tr>
+<tr>
+<td>P4</td>
+<td>Fournir les accès techniques nécessaires (cPanel/FTP, gestionnaire DNS)</td>
+<td>Semaine 2</td>
+</tr>
+<tr>
+<td>P5</td>
+<td>Valider chaque jalon dans un délai de 5 jours ouvrés</td>
+<td>Continu</td>
+</tr>
+<tr>
+<td>P6</td>
+<td>Garantir la véracité et la conformité des contenus fournis</td>
+<td>Continu</td>
+</tr>
+<tr>
+<td>P7</td>
+<td>Régler l&#39;acompte avant le démarrage des travaux</td>
+<td>Avant S1</td>
+</tr>
+</tbody></table>
+<p><strong>Conséquence de retard :</strong> tout retard de fourniture ou de validation supérieur à 5 jours ouvrés décale le planning d&#39;une durée équivalente, sans pénalité pour le Prestataire.</p>
+<hr>
+<h2 id="s5">4. Publics cibles et parcours utilisateurs</h2>
+<h3>4.1 Publics</h3>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Attentes principales</th>
+<th>Parcours privilégié</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Recruteur / RH (non technique)</td>
+<td>Positionnement, séniorité, disponibilité, CV téléchargeable</td>
+<td>Accueil → À propos → CV → Contact</td>
+</tr>
+<tr>
+<td>Client freelance</td>
+<td>Prestations proposées, preuves de réalisation, budget, réactivité</td>
+<td>Accueil → Services → Projets → Contact</td>
+</tr>
+<tr>
+<td>Entreprise / lead tech</td>
+<td>Stack réelle, qualité du code, profondeur des projets</td>
+<td>Accueil → Projets → Fiche projet → GitHub</td>
+</tr>
+<tr>
+<td>Pair / partenaire technique</td>
+<td>Dépôts, démos, veille, collaborations</td>
+<td>Projets → Fiche projet → GitHub / LinkedIn</td>
+</tr>
+</tbody></table>
+<h3>4.2 Parcours de référence</h3>
+<pre><code>Accueil ──┬─&gt; Projets ──&gt; Fiche projet ──&gt; Démo en ligne / Dépôt GitHub
+          ├─&gt; À propos ──&gt; Compétences ──&gt; CV (PDF)
+          └─&gt; Contact (formulaire, e-mail, LinkedIn, GitHub)
+</code></pre>
+<p><strong>Règle de navigation :</strong> toute page permet d&#39;atteindre le formulaire de contact en un maximum de 2 clics, et le téléchargement du CV en 1 clic.</p>
+<hr>
+<h2 id="s6">5. Spécifications fonctionnelles détaillées</h2>
+<h3>5.1 Gabarit global</h3>
+<table>
+<thead>
+<tr>
+<th>Élément</th>
+<th>Spécification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>En-tête</td>
+<td>Logo / nom, navigation principale, sélecteur de langue FR/EN, bouton d&#39;appel à l&#39;action « Me contacter »</td>
+</tr>
+<tr>
+<td>Navigation</td>
+<td>Accueil, À propos, Compétences, Projets, Services, CV, Contact</td>
+</tr>
+<tr>
+<td>Pied de page</td>
+<td>Liens de navigation secondaires, e-mail, réseaux (GitHub, LinkedIn), mention de disponibilité, mentions légales, sélecteur de langue</td>
+</tr>
+<tr>
+<td>Sélecteur de langue</td>
+<td>Visible sur toutes les pages, conserve la page courante lors du changement de langue</td>
+</tr>
+<tr>
+<td>Responsive</td>
+<td>Menu condensé sur mobile, navigation accessible au clavier</td>
+</tr>
+<tr>
+<td>Divers</td>
+<td>Fil d&#39;Ariane sur les fiches projet, page 404 personnalisée, indicateur de page active</td>
+</tr>
+</tbody></table>
+<h3>5.2 Accueil</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Exigence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>F-A1</td>
+<td>Titre principal explicite indiquant le positionnement (« Développeur web &amp; application — [spécialité] »)</td>
+</tr>
+<tr>
+<td>F-A2</td>
+<td>Sous-titre de synthèse : spécialités, types de projets, technologies principales</td>
+</tr>
+<tr>
+<td>F-A3</td>
+<td>Accroche courte et percutante (2 à 3 phrases maximum)</td>
+</tr>
+<tr>
+<td>F-A4</td>
+<td>Trois appels à l&#39;action visibles : Voir les projets · Télécharger le CV · Me contacter</td>
+</tr>
+<tr>
+<td>F-A5</td>
+<td>Indicateur de disponibilité (ex. « Disponible pour missions à partir de [mois] »)</td>
+</tr>
+<tr>
+<td>F-A6</td>
+<td>Sélection de 3 projets mis en avant avec visuel, stack et lien vers la fiche</td>
+</tr>
+<tr>
+<td>F-A7</td>
+<td>Bandeau de technologies clés (icônes + libellés)</td>
+</tr>
+<tr>
+<td>F-A8</td>
+<td>Photo ou avatar professionnel (optionnel, emplacement réservé)</td>
+</tr>
+<tr>
+<td>F-A9</td>
+<td>Aucun défilement nécessaire pour identifier le profil et les actions principales (above the fold)</td>
+</tr>
+</tbody></table>
+<h3>5.3 À propos</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Exigence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>F-B1</td>
+<td>Parcours : formation, expériences marquantes, évolution</td>
+</tr>
+<tr>
+<td>F-B2</td>
+<td>Profil technique : domaines de prédilection, méthodologie de travail</td>
+</tr>
+<tr>
+<td>F-B3</td>
+<td>Profil humain : qualités, centres d&#39;intérêt en lien avec le métier</td>
+</tr>
+<tr>
+<td>F-B4</td>
+<td>Objectifs professionnels et positionnement recherché</td>
+</tr>
+<tr>
+<td>F-B5</td>
+<td>Emplacement photo professionnelle ou avatar, avec texte alternatif</td>
+</tr>
+<tr>
+<td>F-B6</td>
+<td>Possibilité de mise en avant d&#39;une expérience ou d&#39;une certification</td>
+</tr>
+<tr>
+<td>F-B7</td>
+<td>Longueur maîtrisée : contenu scannable (titres, listes, 400 à 600 mots)</td>
+</tr>
+</tbody></table>
+<h3>5.4 Compétences</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Exigence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>F-C1</td>
+<td>Front-end : HTML, CSS, JavaScript, frameworks et bibliothèques</td>
+</tr>
+<tr>
+<td>F-C2</td>
+<td>Back-end : Node.js, API, bases de données, frameworks</td>
+</tr>
+<tr>
+<td>F-C3</td>
+<td>Outils : Git, GitHub, Docker, Figma, IDE, outils de déploiement</td>
+</tr>
+<tr>
+<td>F-C4</td>
+<td>Soft skills : rigueur, autonomie, communication, travail en équipe</td>
+</tr>
+<tr>
+<td>F-C5</td>
+<td>Organisation par catégories avec niveaux ou mentions de maîtrise</td>
+</tr>
+<tr>
+<td>F-C6</td>
+<td>Structure de données éditable sans toucher au code</td>
+</tr>
+<tr>
+<td>F-C7</td>
+<td>Présentation visuelle cohérente (grille, pictogrammes ou badges)</td>
+</tr>
+<tr>
+<td>F-C8</td>
+<td>Aucune affirmation non vérifiable (pas de pourcentage arbitraire sans justification)</td>
+</tr>
+</tbody></table>
+<h3>5.5 Projets</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Exigence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>F-D1</td>
+<td>Liste de projets avec visuel, titre, résumé, stack et type (web / application)</td>
+</tr>
+<tr>
+<td>F-D2</td>
+<td>Filtres ou catégorisation par type et par technologie</td>
+</tr>
+<tr>
+<td>F-D3</td>
+<td>Fiche projet complète : contexte, objectifs, stack technique, fonctionnalités, rôle, résultats</td>
+</tr>
+<tr>
+<td>F-D4</td>
+<td>Lien vers démo en ligne lorsqu&#39;elle existe</td>
+</tr>
+<tr>
+<td>F-D5</td>
+<td>Lien vers le dépôt GitHub lorsqu&#39;il est public</td>
+</tr>
+<tr>
+<td>F-D6</td>
+<td>Mise en avant des projets web <strong>et</strong> applicatifs</td>
+</tr>
+<tr>
+<td>F-D7</td>
+<td>Ajout, modification ou suppression d&#39;un projet par simple fichier de contenu</td>
+</tr>
+<tr>
+<td>F-D8</td>
+<td>Tri configurable (projet mis en avant, ordre d&#39;affichage, date)</td>
+</tr>
+<tr>
+<td>F-D9</td>
+<td>Image de couverture obligatoire, texte alternatif exigé, fallback si absente</td>
+</tr>
+<tr>
+<td>F-D10</td>
+<td>Page 404 et cas d&#39;absence de démo/dépôt gérés proprement</td>
+</tr>
+</tbody></table>
+<h3>5.6 Services (optionnel — inclus au scénario B)</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Exigence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>F-E1</td>
+<td>Création de site vitrine</td>
+</tr>
+<tr>
+<td>F-E2</td>
+<td>Développement front-end</td>
+</tr>
+<tr>
+<td>F-E3</td>
+<td>Intégration responsive</td>
+</tr>
+<tr>
+<td>F-E4</td>
+<td>Développement d&#39;applications web</td>
+</tr>
+<tr>
+<td>F-E5</td>
+<td>Maintenance ou évolution de projet</td>
+</tr>
+<tr>
+<td>F-E6</td>
+<td>Pour chaque service : description, périmètre, livrables, fourchette indicative</td>
+</tr>
+<tr>
+<td>F-E7</td>
+<td>Appel à l&#39;action menant au formulaire de contact</td>
+</tr>
+</tbody></table>
+<h3>5.7 CV / Resume</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Exigence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>F-F1</td>
+<td>Téléchargement du CV au format PDF</td>
+</tr>
+<tr>
+<td>F-F2</td>
+<td>Version française et version anglaise</td>
+</tr>
+<tr>
+<td>F-F3</td>
+<td>Fichier optimisé pour l&#39;impression et le parsage automatique (ATS)</td>
+</tr>
+<tr>
+<td>F-F4</td>
+<td>Indication de la date de mise à jour du document</td>
+</tr>
+<tr>
+<td>F-F5</td>
+<td>Ouverture dans un nouvel onglet avec indication de la langue du fichier</td>
+</tr>
+</tbody></table>
+<h3>5.8 Contact</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Exigence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>F-G1</td>
+<td>Formulaire : nom, e-mail, sujet, message, champ piège anti-spam</td>
+</tr>
+<tr>
+<td>F-G2</td>
+<td>Validation côté client et côté serveur</td>
+</tr>
+<tr>
+<td>F-G3</td>
+<td>Protection anti-spam (honeypot + limitation de débit, Turnstile/hCaptcha en option)</td>
+</tr>
+<tr>
+<td>F-G4</td>
+<td>Envoi vers l&#39;adresse e-mail professionnelle, avec accusé de réception automatique</td>
+</tr>
+<tr>
+<td>F-G5</td>
+<td>Message de confirmation explicite après envoi</td>
+</tr>
+<tr>
+<td>F-G6</td>
+<td>Gestion des erreurs lisible (champ manquant, e-mail invalide, échec d&#39;envoi)</td>
+</tr>
+<tr>
+<td>F-G7</td>
+<td>Adresse e-mail professionnelle affichée en clair</td>
+</tr>
+<tr>
+<td>F-G8</td>
+<td>Liens LinkedIn, GitHub et autres plateformes pertinentes</td>
+</tr>
+<tr>
+<td>F-G9</td>
+<td>Message de disponibilité et délai de réponse annoncé (ex. « réponse sous 24 à 48 h »)</td>
+</tr>
+<tr>
+<td>F-G10</td>
+<td>Conformité RGPD : mention d&#39;information, durée de conservation, absence de revente</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="s7">6. Exigences non fonctionnelles</h2>
+<h3>6.1 Performance</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Exigence</th>
+<th>Cible</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NF-P1</td>
+<td>Score Lighthouse Performance (mobile)</td>
+<td>≥ 90</td>
+</tr>
+<tr>
+<td>NF-P2</td>
+<td>Largest Contentful Paint (4G simulé)</td>
+<td>&lt; 2,5 s</td>
+</tr>
+<tr>
+<td>NF-P3</td>
+<td>Cumulative Layout Shift</td>
+<td>&lt; 0,1</td>
+</tr>
+<tr>
+<td>NF-P4</td>
+<td>Poids de la page d&#39;accueil</td>
+<td>&lt; 1 Mo</td>
+</tr>
+<tr>
+<td>NF-P5</td>
+<td>Images en formats modernes (AVIF/WebP) et responsives</td>
+<td>100 % des visuels</td>
+</tr>
+<tr>
+<td>NF-P6</td>
+<td>JavaScript côté client</td>
+<td>Minimal, chargement différé des scripts non critiques</td>
+</tr>
+</tbody></table>
+<h3>6.2 SEO</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Exigence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NF-S1</td>
+<td>Balises <code>title</code> et <code>meta description</code> uniques par page et par langue</td>
+</tr>
+<tr>
+<td>NF-S2</td>
+<td>URLs propres, lisibles, hiérarchisées, distinctes par langue (<code>/projets</code>, <code>/en/projects</code>)</td>
+</tr>
+<tr>
+<td>NF-S3</td>
+<td>Attributs <code>hreflang</code> corrects entre versions FR et EN</td>
+</tr>
+<tr>
+<td>NF-S4</td>
+<td>Données structurées schema.org (Person, WebSite, CreativeWork pour les projets)</td>
+</tr>
+<tr>
+<td>NF-S5</td>
+<td><code>sitemap.xml</code> et <code>robots.txt</code> générés automatiquement</td>
+</tr>
+<tr>
+<td>NF-S6</td>
+<td>Balises Open Graph et Twitter Card avec image de partage par défaut</td>
+</tr>
+<tr>
+<td>NF-S7</td>
+<td>Un seul <code>h1</code> par page, hiérarchie de titres cohérente</td>
+</tr>
+</tbody></table>
+<h3>6.3 Accessibilité</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Exigence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NF-A1</td>
+<td>Conformité visée : WCAG 2.1 niveau AA sur les parcours principaux</td>
+</tr>
+<tr>
+<td>NF-A2</td>
+<td>Contrastes de texte conformes (ratio ≥ 4,5:1 pour le texte courant)</td>
+</tr>
+<tr>
+<td>NF-A3</td>
+<td>Navigation complète au clavier avec indicateur de focus visible</td>
+</tr>
+<tr>
+<td>NF-A4</td>
+<td>Structure sémantique correcte (landmarks, listes, titres)</td>
+</tr>
+<tr>
+<td>NF-A5</td>
+<td>Textes alternatifs pertinents sur toutes les images porteuses de sens</td>
+</tr>
+<tr>
+<td>NF-A6</td>
+<td>Formulaire avec étiquettes associées et messages d&#39;erreur annoncés</td>
+</tr>
+<tr>
+<td>NF-A7</td>
+<td>Respect de <code>prefers-reduced-motion</code> pour toute animation</td>
+</tr>
+<tr>
+<td>NF-A8</td>
+<td>Langue du document déclarée (<code>lang=&quot;fr&quot;</code> / <code>lang=&quot;en&quot;</code>)</td>
+</tr>
+</tbody></table>
+<h3>6.4 Compatibilité et responsive</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Exigence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NF-R1</td>
+<td>Points de rupture : 360 px, 768 px, 1024 px, 1440 px</td>
+</tr>
+<tr>
+<td>NF-R2</td>
+<td>Navigateurs : Chrome, Firefox, Safari, Edge (2 dernières versions majeures)</td>
+</tr>
+<tr>
+<td>NF-R3</td>
+<td>Support iOS Safari et Android Chrome</td>
+</tr>
+<tr>
+<td>NF-R4</td>
+<td>Zones tactiles ≥ 44 × 44 px sur mobile</td>
+</tr>
+<tr>
+<td>NF-R5</td>
+<td>Lisibilité sans zoom jusqu&#39;à 200 %</td>
+</tr>
+</tbody></table>
+<h3>6.5 Sécurité</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Exigence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NF-SE1</td>
+<td>HTTPS obligatoire, redirection HTTP → HTTPS, HSTS</td>
+</tr>
+<tr>
+<td>NF-SE2</td>
+<td>Validation et assainissement de toutes les entrées du formulaire</td>
+</tr>
+<tr>
+<td>NF-SE3</td>
+<td>Protection contre l&#39;injection d&#39;en-têtes e-mail et le spam</td>
+</tr>
+<tr>
+<td>NF-SE4</td>
+<td>En-têtes de sécurité (CSP, X-Content-Type-Options, Referrer-Policy)</td>
+</tr>
+<tr>
+<td>NF-SE5</td>
+<td>Aucun secret ni identifiant en clair dans le dépôt de code</td>
+</tr>
+<tr>
+<td>NF-SE6</td>
+<td>Dépendances maintenues à jour, aucune vulnérabilité critique connue</td>
+</tr>
+</tbody></table>
+<h3>6.6 RGPD et données personnelles</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Exigence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NF-RG1</td>
+<td>Formulaire conforme : finalité, base légale, durée de conservation, droits</td>
+</tr>
+<tr>
+<td>NF-RG2</td>
+<td>Aucun transfert de données à des tiers non mentionnés</td>
+</tr>
+<tr>
+<td>NF-RG3</td>
+<td>Mesure d&#39;audience sans cookie ni donnée personnelle (Plausible, Umami ou Matomo configuré) ou bandeau de consentement</td>
+</tr>
+<tr>
+<td>NF-RG4</td>
+<td>Aucune police ni ressource chargée depuis un CDN tiers sans mention</td>
+</tr>
+<tr>
+<td>NF-RG5</td>
+<td>Politique de confidentialité et mentions légales publiées</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="s8">7. Stack technique recommandée</h2>
+<h3>7.1 Recommandation principale</h3>
+<table>
+<thead>
+<tr>
+<th>Couche</th>
+<th>Technologie</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Génération du site</td>
+<td><strong>Astro 5</strong> (sortie 100 % statique)</td>
+<td>Excellent score de performance par défaut, JS minimal, i18n et collections de contenu natives, aucun serveur Node requis en production</td>
+</tr>
+<tr>
+<td>Style</td>
+<td><strong>Tailwind CSS 4</strong></td>
+<td>Design system cohérent, maintenabilité, poids CSS réduit</td>
+</tr>
+<tr>
+<td>Contenu</td>
+<td><strong>Content Collections</strong> (Markdown / MDX)</td>
+<td>Ajout d&#39;un projet = ajout d&#39;un fichier, aucun code à modifier</td>
+</tr>
+<tr>
+<td>Internationalisation</td>
+<td>Routage i18n natif Astro (<code>/</code> en FR, <code>/en/</code>)</td>
+<td>URLs distinctes, <code>hreflang</code> propre, parité FR/EN vérifiable</td>
+</tr>
+<tr>
+<td>Formulaire de contact</td>
+<td><strong>PHP 8 + PHPMailer</strong> (endpoint sur o2switch)</td>
+<td>Compatible hébergement mutualisé, envoi SMTP authentifié, aucune dépendance à un service tiers</td>
+</tr>
+<tr>
+<td>Anti-spam</td>
+<td>Honeypot + limitation de débit + Cloudflare Turnstile (option)</td>
+<td>Efficace sans dégrader l&#39;expérience utilisateur</td>
+</tr>
+<tr>
+<td>Mesure d&#39;audience</td>
+<td><strong>Plausible</strong> (hébergé) ou <strong>Umami</strong> (auto-hébergé)</td>
+<td>Sans cookie, conforme RGPD sans bandeau</td>
+</tr>
+<tr>
+<td>Versionnage</td>
+<td>Git + GitHub</td>
+<td>Historique, sauvegarde, déploiement</td>
+</tr>
+<tr>
+<td>Intégration continue</td>
+<td>GitHub Actions → build → envoi FTP</td>
+<td>Publication reproductible, réduction du risque d&#39;erreur manuelle</td>
+</tr>
+<tr>
+<td>Hébergement</td>
+<td><strong>o2switch</strong> mutualisé (Apache, PHP, MySQL, SSL Let&#39;s Encrypt)</td>
+<td>Coût maîtrisé, conforme au contexte du Client, panneau cPanel</td>
+</tr>
+<tr>
+<td>Qualité</td>
+<td>Lighthouse CI, <code>axe-core</code>, Prettier, ESLint</td>
+<td>Contrôle automatisé performance / accessibilité</td>
+</tr>
+</tbody></table>
+<h3>7.2 Alternatives évaluées</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Avantages</th>
+<th>Inconvénients</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Next.js (export statique)</strong></td>
+<td>Écosystème React, familiarité</td>
+<td>Plus lourd, JS côté client supérieur, configuration i18n plus verbeuse</td>
+<td>Retenu si le Client maîtrise React et prévoit une évolution vers une application</td>
+</tr>
+<tr>
+<td><strong>React + Vite (SPA)</strong></td>
+<td>Simplicité de développement</td>
+<td>SEO et performance dégradés sans rendu serveur</td>
+<td>Non recommandé pour un site vitrine</td>
+</tr>
+<tr>
+<td><strong>HTML / CSS / JavaScript vanilla</strong></td>
+<td>Aucune dépendance, contrôle total</td>
+<td>Ajout de projet manuel, duplication FR/EN, maintenance coûteuse</td>
+<td>Envisageable uniquement en scénario A très contraint</td>
+</tr>
+<tr>
+<td><strong>WordPress</strong></td>
+<td>Autonomie éditoriale, écosystème</td>
+<td>Maintenance, sécurité, performance à surveiller</td>
+<td>Pertinent si un blog et une gestion de contenu poussée sont prioritaires</td>
+</tr>
+</tbody></table>
+<h3>7.3 Contraintes techniques liées à o2switch</h3>
+<table>
+<thead>
+<tr>
+<th>Contrainte</th>
+<th>Conséquence retenue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pas d&#39;exécution Node.js en production</td>
+<td>Le site est généré localement ou en CI, puis déployé en fichiers statiques</td>
+</tr>
+<tr>
+<td>PHP 8 disponible</td>
+<td>Le formulaire de contact est traité par un script PHP + PHPMailer via le SMTP du domaine</td>
+</tr>
+<tr>
+<td>Accès FTP / SFTP et cPanel</td>
+<td>Déploiement par FTP ou Git (fonctionnalité Git de cPanel si activée)</td>
+</tr>
+<tr>
+<td>SSL Let&#39;s Encrypt inclus</td>
+<td>Activation via cPanel, renouvellement automatique</td>
+</tr>
+<tr>
+<td>Base de données MySQL disponible</td>
+<td>Non requise en scénario B ; réservée aux options blog ou CMS</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="s9">8. Contenus à fournir par le Client</h2>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Contenu</th>
+<th>Format attendu</th>
+<th>Responsable</th>
+<th>Échéance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>C1</td>
+<td>Nom, prénom ou nom professionnel</td>
+<td>Texte</td>
+<td>Client</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>C2</td>
+<td>Titre professionnel et positionnement</td>
+<td>Texte</td>
+<td>Client</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>C3</td>
+<td>Texte de présentation (accueil + à propos)</td>
+<td>400 à 600 mots, FR et EN</td>
+<td>Client</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>C4</td>
+<td>Liste des compétences par catégorie</td>
+<td>Liste structurée</td>
+<td>Client</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>C5</td>
+<td>Descriptions de projets</td>
+<td>Fiche par projet, FR et EN</td>
+<td>Client</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>C6</td>
+<td>Captures d&#39;écran, visuels ou maquettes</td>
+<td>PNG/JPG ≥ 1600 px de large</td>
+<td>Client</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>C7</td>
+<td>CV en PDF</td>
+<td>PDF, versions FR et EN</td>
+<td>Client</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>C8</td>
+<td>Coordonnées de contact</td>
+<td>E-mail, téléphone (optionnel)</td>
+<td>Client</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>C9</td>
+<td>Liens externes</td>
+<td>GitHub, LinkedIn, portfolio externe</td>
+<td>Client</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>C10</td>
+<td>Photo ou avatar</td>
+<td>≥ 800 × 800 px, fond neutre</td>
+<td>Client</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>C11</td>
+<td>Logo ou identité visuelle</td>
+<td>SVG, PNG transparent</td>
+<td>Client</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>C12</td>
+<td>Versions FR et EN des contenus</td>
+<td>Fichiers ou texte</td>
+<td>Client</td>
+<td>S1</td>
+</tr>
+</tbody></table>
+<p><strong>Traçabilité :</strong> ce tableau est tenu à jour par le Prestataire ; tout contenu manquant à la date d&#39;échéance décale le planning (§ 3.3).</p>
+<hr>
+<h2 id="s10">9. Design et expérience utilisateur</h2>
+<h3>9.1 Direction artistique attendue</h3>
+<table>
+<thead>
+<tr>
+<th>Axe</th>
+<th>Attendu</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Registre</td>
+<td>Professionnel, moderne, sobre et crédible</td>
+</tr>
+<tr>
+<td>Priorité</td>
+<td>Le contenu domine l&#39;effet visuel ; pas d&#39;animation gratuite</td>
+</tr>
+<tr>
+<td>Palette</td>
+<td>1 couleur d&#39;accent + échelle de neutres, contraste AA garantis</td>
+</tr>
+<tr>
+<td>Typographie</td>
+<td>1 à 2 familles maximum, hiérarchie nette, tailles fluides</td>
+</tr>
+<tr>
+<td>Iconographie</td>
+<td>Style unique et cohérent, pictogrammes techniques lisibles</td>
+</tr>
+<tr>
+<td>Imagerie</td>
+<td>Captures produits nettes, cadrage homogène, formats 16:9 et 4:3</td>
+</tr>
+<tr>
+<td>Densité</td>
+<td>Aération maîtrisée, largeur de lecture 60 à 75 caractères</td>
+</tr>
+</tbody></table>
+<h3>9.2 Exigences UX/UI</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Exigence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UX1</td>
+<td>Interface claire et fluide, sans surcharge cognitive</td>
+</tr>
+<tr>
+<td>UX2</td>
+<td>Navigation simple et prévisible, page active identifiée</td>
+</tr>
+<tr>
+<td>UX3</td>
+<td>Hiérarchie visuelle forte : titre, sous-titre, contenu, action</td>
+</tr>
+<tr>
+<td>UX4</td>
+<td>Mise en avant immédiate des projets et des compétences</td>
+</tr>
+<tr>
+<td>UX5</td>
+<td>Cohérence graphique entre toutes les sections</td>
+</tr>
+<tr>
+<td>UX6</td>
+<td>Lisibilité optimale sur tous les supports</td>
+</tr>
+<tr>
+<td>UX7</td>
+<td>Temps de chargement réduit et perception de rapidité</td>
+</tr>
+<tr>
+<td>UX8</td>
+<td>Micro-interactions discrètes, désactivables via <code>prefers-reduced-motion</code></td>
+</tr>
+<tr>
+<td>UX9</td>
+<td>États de survol, focus, actif et désactivé définis pour tous les composants</td>
+</tr>
+<tr>
+<td>UX10</td>
+<td>Aucune information essentielle portée uniquement par la couleur</td>
+</tr>
+</tbody></table>
+<h3>9.3 Composants du design system</h3>
+<p>Boutons (3 variantes), liens, badges de technologie, cartes projet, cartes service, accordéon, formulaire et champs, messages d&#39;alerte, en-tête, pied de page, sélecteur de langue, fil d&#39;Ariane, pagination ou filtres, composant de téléchargement de fichier.</p>
+<hr>
+<h2 id="s11">10. Planning prévisionnel</h2>
+<h3>10.1 Déroulé sur 7 semaines</h3>
+<table>
+<thead>
+<tr>
+<th>Semaine</th>
+<th>Phase</th>
+<th>Travaux</th>
+<th>Livrable</th>
+<th>Jalon</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S1</td>
+<td>Cadrage</td>
+<td>Atelier de cadrage, arborescence, collecte des contenus, définition des personas</td>
+<td>Note de cadrage + arborescence</td>
+<td><strong>V1 — Validation du cadrage</strong></td>
+</tr>
+<tr>
+<td>S2</td>
+<td>Design</td>
+<td>Wireframes, direction artistique, maquettes desktop et mobile, design system</td>
+<td>Maquettes Figma</td>
+<td><strong>V2 — Validation du design</strong></td>
+</tr>
+<tr>
+<td>S3</td>
+<td>Développement</td>
+<td>Mise en place du projet, design system codé, en-tête/pied de page, Accueil, À propos</td>
+<td>Pages Accueil et À propos</td>
+<td>—</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>Développement</td>
+<td>Compétences, liste des projets, fiche projet, filtres, Services</td>
+<td>Pages Compétences, Projets, Services</td>
+<td>—</td>
+</tr>
+<tr>
+<td>S5</td>
+<td>Intégration</td>
+<td>Internationalisation FR/EN, CV, formulaire de contact, page 404, intégration des contenus</td>
+<td>Site complet en préproduction</td>
+<td><strong>V3 — Recette fonctionnelle</strong></td>
+</tr>
+<tr>
+<td>S6</td>
+<td>Qualité</td>
+<td>Tests responsive et navigateurs, accessibilité, SEO, performance, corrections</td>
+<td>Rapport de tests + corrections</td>
+<td>—</td>
+</tr>
+<tr>
+<td>S7</td>
+<td>Mise en ligne</td>
+<td>Déploiement o2switch, DNS, SSL, analytics, sauvegardes, documentation, formation</td>
+<td>Site en production + documentation</td>
+<td><strong>V4 — Recette finale et mise en production</strong></td>
+</tr>
+</tbody></table>
+<h3>10.2 Jalons et règles de validation</h3>
+<table>
+<thead>
+<tr>
+<th>Jalon</th>
+<th>Objet</th>
+<th>Délai de réponse du Client</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>V1</td>
+<td>Cadrage et arborescence validés</td>
+<td>5 jours ouvrés</td>
+<td>Autorise le lancement du design</td>
+</tr>
+<tr>
+<td>V2</td>
+<td>Maquettes validées</td>
+<td>5 jours ouvrés</td>
+<td>Autorise le développement</td>
+</tr>
+<tr>
+<td>V3</td>
+<td>Recette fonctionnelle</td>
+<td>5 jours ouvrés</td>
+<td>Autorise la phase de qualité</td>
+</tr>
+<tr>
+<td>V4</td>
+<td>Recette finale</td>
+<td>5 jours ouvrés</td>
+<td>Déclenche la mise en production et le solde</td>
+</tr>
+</tbody></table>
+<p><strong>Révisions incluses :</strong> 2 séries d&#39;allers-retours par jalon V1 à V3. Au-delà, toute demande supplémentaire fait l&#39;objet d&#39;un avenant chiffré.</p>
+<h3>10.3 Hypothèses de planning</h3>
+<p>Le délai de 7 semaines suppose : contenus fournis en S1, accès techniques disponibles en S2, validations rendues en 5 jours ouvrés, et aucune demande de modification du périmètre en cours de projet.</p>
+<hr>
+<h2 id="s12">11. Budget estimatif</h2>
+<h3>11.1 Hypothèses de chiffrage</h3>
+<table>
+<thead>
+<tr>
+<th>Paramètre</th>
+<th>Valeur retenue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Taux journalier moyen (TJM) de référence</td>
+<td><strong>400 € HT / jour</strong> (profil confirmé, France)</td>
+</tr>
+<tr>
+<td>Variante profil junior</td>
+<td>280 – 330 € HT / jour</td>
+</tr>
+<tr>
+<td>Variante profil senior / expert</td>
+<td>500 – 600 € HT / jour</td>
+</tr>
+<tr>
+<td>Unité de facturation</td>
+<td>Jour-homme de 7 heures</td>
+</tr>
+<tr>
+<td>Validité de l&#39;offre</td>
+<td>30 jours à compter de la date d&#39;émission</td>
+</tr>
+<tr>
+<td>Régime de TVA</td>
+<td>TVA non applicable, art. 293 B du CGI (si micro-entreprise) — à confirmer</td>
+</tr>
+</tbody></table>
+<h3>11.2 Scénarios</h3>
+<h4>Scénario A — Vitrine essentielle</h4>
+<p>Périmètre : site vitrine sobre, 5 sections (Accueil, À propos, Compétences, Projets, Contact), bilingue FR/EN, responsive, formulaire de contact, sans fiche projet détaillée ni section Services.</p>
+<table>
+<thead>
+<tr>
+<th>Poste</th>
+<th>Jours</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cadrage et arborescence</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Design (maquettes desktop + mobile)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Développement des pages</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Internationalisation FR/EN</td>
+<td>1,5</td>
+</tr>
+<tr>
+<td>Formulaire de contact</td>
+<td>1</td>
+</tr>
+<tr>
+<td>SEO, accessibilité, performance</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Tests et corrections</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Déploiement et documentation</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>13,5 jours</strong></td>
+</tr>
+<tr>
+<td><strong>Montant estimé</strong></td>
+<td><strong>5 400 € HT</strong></td>
+</tr>
+</tbody></table>
+<h4>Scénario B — Portfolio complet bilingue <strong>(recommandé)</strong></h4>
+<p>Périmètre : l&#39;intégralité du § 5, fiches projet détaillées, section Services, CV bilingue, filtres, gestion de contenu par fichiers.</p>
+<table>
+<thead>
+<tr>
+<th>Poste</th>
+<th>Jours</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cadrage, arborescence, atelier</td>
+<td>1,5</td>
+</tr>
+<tr>
+<td>Wireframes et maquettes haute fidélité</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Design system et mise en place technique</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Développement : Accueil, À propos, Compétences</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Développement : Projets, fiche projet, filtres, Services</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Internationalisation FR/EN et contenus</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Formulaire de contact sécurisé + e-mails</td>
+<td>1,5</td>
+</tr>
+<tr>
+<td>SEO technique, accessibilité, performance</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Tests responsive et navigateurs, corrections</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Déploiement, DNS, SSL, analytics</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Documentation et session de transfert</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>24 jours</strong></td>
+</tr>
+<tr>
+<td><strong>Montant estimé</strong></td>
+<td><strong>9 600 € HT</strong></td>
+</tr>
+</tbody></table>
+<h4>Scénario C — Portfolio augmenté</h4>
+<p>Périmètre : scénario B + blog technique, gestion de contenu, prise de rendez-vous, animations.</p>
+<table>
+<thead>
+<tr>
+<th>Poste</th>
+<th>Jours</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Scénario B</td>
+<td>24</td>
+</tr>
+<tr>
+<td>Blog technique (liste, article, catégories, RSS)</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Système de gestion de contenu (CMS léger)</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Prise de rendez-vous (intégration)</td>
+<td>0,5</td>
+</tr>
+<tr>
+<td>Animations et micro-interactions avancées</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Études de cas détaillées (3 projets)</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>37,5 jours</strong></td>
+</tr>
+<tr>
+<td><strong>Montant estimé</strong></td>
+<td><strong>15 000 € HT</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Le scénario C dépasse légèrement la fourchette indiquée en § 1 ; il est présenté à titre d&#39;option haute.</p>
+</blockquote>
+<h3>11.3 Options à l&#39;unité</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Option</th>
+<th>Jours</th>
+<th>Montant HT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>O1</td>
+<td>Blog technique (liste, article, catégories, flux RSS)</td>
+<td>4 – 6</td>
+<td>1 600 – 2 400 €</td>
+</tr>
+<tr>
+<td>O2</td>
+<td>Étude de cas détaillée par projet</td>
+<td>0,5 – 1 / projet</td>
+<td>200 – 400 €</td>
+</tr>
+<tr>
+<td>O3</td>
+<td>Module témoignages clients</td>
+<td>1</td>
+<td>400 €</td>
+</tr>
+<tr>
+<td>O4</td>
+<td>Système de gestion de contenu (CMS léger, type Decap CMS)</td>
+<td>3 – 5</td>
+<td>1 200 – 2 000 €</td>
+</tr>
+<tr>
+<td>O5</td>
+<td>Animations légères et transitions</td>
+<td>1,5</td>
+<td>600 €</td>
+</tr>
+<tr>
+<td>O6</td>
+<td>Prise de rendez-vous en ligne</td>
+<td>0,5 – 1</td>
+<td>200 – 400 €</td>
+</tr>
+<tr>
+<td>O7</td>
+<td>Rédaction éditoriale des contenus</td>
+<td>3 – 4</td>
+<td>1 200 – 1 600 €</td>
+</tr>
+<tr>
+<td>O8</td>
+<td>Traduction professionnelle FR ⇄ EN</td>
+<td>1,5 – 2</td>
+<td>600 – 800 €</td>
+</tr>
+<tr>
+<td>O9</td>
+<td>Création d&#39;identité visuelle et logo</td>
+<td>2 – 3</td>
+<td>800 – 1 200 €</td>
+</tr>
+<tr>
+<td>O10</td>
+<td>Création de visuels et mockups produits</td>
+<td>1 – 2</td>
+<td>400 – 800 €</td>
+</tr>
+<tr>
+<td>O11</td>
+<td>Version supplémentaire (3ᵉ langue)</td>
+<td>2</td>
+<td>800 €</td>
+</tr>
+<tr>
+<td>O12</td>
+<td>Page de tarifs détaillée</td>
+<td>1</td>
+<td>400 €</td>
+</tr>
+</tbody></table>
+<h3>11.4 Coûts récurrents (réglés directement par le Client)</h3>
+<table>
+<thead>
+<tr>
+<th>Poste</th>
+<th>Fourchette annuelle indicative</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hébergement mutualisé o2switch</td>
+<td>60 – 110 € / an</td>
+</tr>
+<tr>
+<td>Nom de domaine (.fr)</td>
+<td>10 – 15 € / an</td>
+</tr>
+<tr>
+<td>Certificat SSL Let&#39;s Encrypt</td>
+<td>Inclus</td>
+</tr>
+<tr>
+<td>Mesure d&#39;audience (Plausible)</td>
+<td>≈ 100 € / an — ou 0 € si auto-hébergé (Umami)</td>
+</tr>
+<tr>
+<td>Maintenance corrective et évolutive (option)</td>
+<td>80 € / mois ou 2 h/mois facturées à l&#39;heure</td>
+</tr>
+</tbody></table>
+<h3>11.5 Conditions financières</h3>
+<table>
+<thead>
+<tr>
+<th>Élément</th>
+<th>Modalité</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Acompte</td>
+<td>30 % à la signature, déclenchant le démarrage</td>
+</tr>
+<tr>
+<td>Situation intermédiaire</td>
+<td>40 % à la validation du design (jalon V2)</td>
+</tr>
+<tr>
+<td>Solde</td>
+<td>30 % à la recette finale (jalon V4)</td>
+</tr>
+<tr>
+<td>Délai de paiement</td>
+<td>30 jours à compter de la date de facture</td>
+</tr>
+<tr>
+<td>Pénalité de retard</td>
+<td>Taux d&#39;intérêt légal + indemnité forfaitaire de 40 € (art. L441-10 du Code de commerce)</td>
+</tr>
+<tr>
+<td>Frais annexes</td>
+<td>Domaine, hébergement et services tiers réglés directement par le Client</td>
+</tr>
+<tr>
+<td>Propriété intellectuelle</td>
+<td>Cession des droits d&#39;exploitation au Client après paiement intégral</td>
+</tr>
+<tr>
+<td>Garantie</td>
+<td>30 jours après la mise en production : correction sans frais de tout dysfonctionnement imputable au Prestataire</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="s13">12. Gestion des risques</h2>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Risque</th>
+<th>Probabilité</th>
+<th>Impact</th>
+<th>Mesure de maîtrise</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>R1</td>
+<td>Contenus FR/EN fournis en retard</td>
+<td>Élevée</td>
+<td>Élevé</td>
+<td>Échéances du § 8, contenus de substitution provisoires, décalage du planning documenté</td>
+</tr>
+<tr>
+<td>R2</td>
+<td>Dérive du périmètre en cours de projet</td>
+<td>Moyenne</td>
+<td>Élevé</td>
+<td>Périmètre figé au § 3, tout ajout passe par un avenant chiffré</td>
+</tr>
+<tr>
+<td>R3</td>
+<td>Contraintes de l&#39;hébergement mutualisé</td>
+<td>Faible</td>
+<td>Moyen</td>
+<td>Validation de la stack en amont, tests de déploiement dès la S3</td>
+</tr>
+<tr>
+<td>R4</td>
+<td>Traduction EN de qualité inégale</td>
+<td>Moyenne</td>
+<td>Moyen</td>
+<td>Relecture native ou option O8, glossaire technique partagé</td>
+</tr>
+<tr>
+<td>R5</td>
+<td>Performance dégradée par les visuels</td>
+<td>Moyenne</td>
+<td>Moyen</td>
+<td>Budget de performance, compression et formats modernes, contrôle Lighthouse en CI</td>
+</tr>
+<tr>
+<td>R6</td>
+<td>Spam sur le formulaire de contact</td>
+<td>Élevée</td>
+<td>Faible</td>
+<td>Honeypot, limitation de débit, Turnstile en option</td>
+</tr>
+<tr>
+<td>R7</td>
+<td>Indisponibilité du Client pour les validations</td>
+<td>Moyenne</td>
+<td>Moyen</td>
+<td>Jalons datés, relance automatique, clause de décalage (§ 3.3)</td>
+</tr>
+<tr>
+<td>R8</td>
+<td>Perte de contenus ou de code</td>
+<td>Faible</td>
+<td>Élevé</td>
+<td>Dépôt Git distant, sauvegardes o2switch, export mensuel</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="s14">13. Critères de réussite et recette</h2>
+<h3>13.1 Critères d&#39;acceptation</h3>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Critère</th>
+<th>Méthode de vérification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AC1</td>
+<td>Le site présente clairement le profil du développeur</td>
+<td>Test utilisateur à 5 secondes sur la page d&#39;accueil</td>
+</tr>
+<tr>
+<td>AC2</td>
+<td>Les projets sont mis en valeur professionnellement</td>
+<td>Vérification de la présence des 6 rubriques par fiche projet</td>
+</tr>
+<tr>
+<td>AC3</td>
+<td>La navigation est simple et efficace</td>
+<td>Contact atteignable en ≤ 2 clics depuis toute page</td>
+</tr>
+<tr>
+<td>AC4</td>
+<td>Le site est performant et responsive</td>
+<td>Lighthouse ≥ 90 sur les 4 catégories, tests sur 4 points de rupture</td>
+</tr>
+<tr>
+<td>AC5</td>
+<td>La version bilingue est cohérente et complète</td>
+<td>Contrôle de parité FR/EN : 100 % des chaînes traduites</td>
+</tr>
+<tr>
+<td>AC6</td>
+<td>Le site génère des prises de contact qualifiées</td>
+<td>Formulaire opérationnel, accusé de réception reçu</td>
+</tr>
+<tr>
+<td>AC7</td>
+<td>Le Client peut ajouter un projet seul</td>
+<td>Exercice d&#39;ajout d&#39;un projet lors de la session de transfert</td>
+</tr>
+</tbody></table>
+<h3>13.2 Indicateurs de performance (6 mois après la mise en ligne)</h3>
+<table>
+<thead>
+<tr>
+<th>Indicateur</th>
+<th>Cible indicative</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Taux de visiteurs atteignant la page Contact</td>
+<td>≥ 15 %</td>
+</tr>
+<tr>
+<td>Taux de conversion du formulaire</td>
+<td>≥ 2 %</td>
+</tr>
+<tr>
+<td>Durée moyenne de session</td>
+<td>≥ 1 min 30</td>
+</tr>
+<tr>
+<td>Taux de rebond</td>
+<td>≤ 60 %</td>
+</tr>
+<tr>
+<td>Nombre de prises de contact mensuelles</td>
+<td>≥ 3</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="s15">14. Livrables attendus</h2>
+<table>
+<thead>
+<tr>
+<th>Réf.</th>
+<th>Livrable</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>L1</td>
+<td>Cahier des charges validé et signé</td>
+<td>PDF</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>Arborescence et wireframes</td>
+<td>Figma / PDF</td>
+</tr>
+<tr>
+<td>L3</td>
+<td>Maquettes haute fidélité desktop et mobile</td>
+<td>Figma</td>
+</tr>
+<tr>
+<td>L4</td>
+<td>Design system documenté</td>
+<td>Figma</td>
+</tr>
+<tr>
+<td>L5</td>
+<td>Site web développé et fonctionnel</td>
+<td>Dépôt Git + build statique</td>
+</tr>
+<tr>
+<td>L6</td>
+<td>Version responsive (mobile, tablette, desktop)</td>
+<td>Intégré au site</td>
+</tr>
+<tr>
+<td>L7</td>
+<td>Contenus bilingues FR/EN intégrés</td>
+<td>Sur le site</td>
+</tr>
+<tr>
+<td>L8</td>
+<td>Formulaire de contact opérationnel</td>
+<td>Sur le site + script PHP</td>
+</tr>
+<tr>
+<td>L9</td>
+<td>Site déployé sur l&#39;hébergement o2switch</td>
+<td>En production</td>
+</tr>
+<tr>
+<td>L10</td>
+<td>Configuration du domaine et du SSL</td>
+<td>En production</td>
+</tr>
+<tr>
+<td>L11</td>
+<td>Fichiers sources et accès</td>
+<td>Dépôt GitHub transféré au Client</td>
+</tr>
+<tr>
+<td>L12</td>
+<td>Documentation de mise à jour du contenu</td>
+<td>PDF / Markdown + guide EN</td>
+</tr>
+<tr>
+<td>L13</td>
+<td>Rapport de tests (performance, accessibilité, compatibilité)</td>
+<td>PDF</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="s16">15. Options complémentaires</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Réf. budget</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Blog technique</td>
+<td>Articles, catégories, flux RSS, partage social</td>
+<td>O1</td>
+</tr>
+<tr>
+<td>Études de cas détaillées</td>
+<td>Analyse approfondie par projet, problèmes et solutions</td>
+<td>O2</td>
+</tr>
+<tr>
+<td>Témoignages</td>
+<td>Avis clients avec nom, fonction et entreprise</td>
+<td>O3</td>
+</tr>
+<tr>
+<td>Système de gestion de contenu</td>
+<td>Interface d&#39;édition pour les contenus et projets</td>
+<td>O4</td>
+</tr>
+<tr>
+<td>Animation légère</td>
+<td>Transitions, apparitions au défilement, micro-interactions</td>
+<td>O5</td>
+</tr>
+<tr>
+<td>Prise de rendez-vous</td>
+<td>Intégration d&#39;un calendrier de réservation</td>
+<td>O6</td>
+</tr>
+<tr>
+<td>Section services freelance</td>
+<td>Offres, périmètres et fourchettes tarifaires</td>
+<td>Inclus scénario B</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="s17">16. Validation et signatures</h2>
+<p>Le présent cahier des charges constitue une base de cadrage pour le projet. Il pourra être enrichi ou simplifié selon le niveau d&#39;ambition, le budget, les délais et les outils retenus. Toute modification du périmètre fait l&#39;objet d&#39;un avenant écrit signé par les deux parties.</p>
+<p><strong>Scénario retenu :</strong> ☐ A — Vitrine essentielle  ☐ B — Portfolio complet  ☐ C — Portfolio augmenté</p>
+<p><strong>Options retenues :</strong> ..............................................................................</p>
+<p><strong>Montant global contractuel :</strong> ............................ € HT</p>
+<p><strong>Délai contractuel :</strong> ............................ semaines à compter de l&#39;acompte</p>
+<h3>Pour le Client</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Nom et fonction</td>
+<td>............................................................</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>............................................................</td>
+</tr>
+<tr>
+<td>Lieu</td>
+<td>............................................................</td>
+</tr>
+<tr>
+<td>Signature</td>
+<td>............................................................</td>
+</tr>
+<tr>
+<td>Mention</td>
+<td>Bon pour accord</td>
+</tr>
+</tbody></table>
+<h3>Pour le Prestataire</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Nom et fonction</td>
+<td>............................................................</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>............................................................</td>
+</tr>
+<tr>
+<td>Lieu</td>
+<td>............................................................</td>
+</tr>
+<tr>
+<td>Signature</td>
+<td>............................................................</td>
+</tr>
+<tr>
+<td>Mention</td>
+<td>Bon pour exécution</td>
+</tr>
+</tbody></table>
+<hr>
+<hr>
+<h1 id="s18" class="part">Part II — English Version</h1>
+<p><strong>Reference:</strong> CDC-PORTFOLIO-2025-01
+<strong>Version:</strong> 1.0 — contractual scoping document
+<strong>Subject:</strong> Design, development, deployment and documentation of a bilingual (French / English) portfolio website.</p>
+<h2 id="s19">E1. Executive summary</h2>
+<p>The project is to design, build and deploy a modern, responsive, bilingual portfolio website presenting the profile, skills and projects of a web and application developer.</p>
+<p>The site must simultaneously <strong>build credibility</strong>, <strong>demonstrate technical ability</strong> through detailed project case pages, and <strong>convert</strong> visits into qualified contacts from recruiters, freelance clients, companies and technical partners.</p>
+<p><strong>Key success factors:</strong> information reachable in fewer than three clicks, strict structural parity between the French and English versions, fast loading, accessibility, and the ability for the owner to add new projects without touching code.</p>
+<p><strong>Budget summary:</strong> three scenarios are proposed (§ E7), from €4,400 excluding tax (essential showcase) to €15,000 excluding tax (full portfolio with blog, CMS and booking). The recommended option is <strong>Scenario B — Full bilingual portfolio</strong>, estimated at 24 person-days.</p>
+<h2 id="s20">E2. Scope</h2>
+<h3>In scope</h3>
+<p>Scoping workshop and sitemap · low-fidelity wireframes · art direction and high-fidelity mockups (desktop and mobile) · documented design system · templates for Home, About, Skills, Projects, Project detail, Services, Resume, Contact and 404 · file-based project management (add, edit, delete a project without code) · FR/EN internationalisation with distinct URLs and a language switcher · secure working contact form with anti-spam and auto-reply · downloadable resume in French and English · technical SEO (metadata, hreflang, sitemap, structured data, Open Graph) · WCAG 2.1 AA accessibility target on primary journeys · performance optimisation · responsive and cross-browser testing · client acceptance testing · deployment to o2switch shared hosting, domain and SSL configuration · privacy-friendly analytics · content update documentation · one-hour handover session.</p>
+<h3>Out of scope</h3>
+<p>Full editorial copywriting · professional FR→EN translation when source content is not supplied · logo and brand identity creation · screenshots, mockups and photography · custom back-office, private API or business application development · full editorial blog and advanced CMS · online appointment booking · domain and hosting fees (paid directly by the Client) · maintenance beyond the 30-day warranty · legal notices drafting (assistance provided) · paid search and acquisition campaigns · migration of an existing site.</p>
+<p>Any item outside this scope requires a separate written and priced amendment.</p>
+<h2 id="s21">E3. Functional requirements</h2>
+<table>
+<thead>
+<tr>
+<th>Ref.</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ER1</td>
+<td>The website must be bilingual in French and English, with full content parity</td>
+</tr>
+<tr>
+<td>ER2</td>
+<td>Users must be able to switch language easily from any page, staying on the equivalent page</td>
+</tr>
+<tr>
+<td>ER3</td>
+<td>The website must be responsive on mobile, tablet and desktop</td>
+</tr>
+<tr>
+<td>ER4</td>
+<td>Projects must be easy to add, edit or remove without technical skills</td>
+</tr>
+<tr>
+<td>ER5</td>
+<td>The contact form must be simple, validated on both client and server side, and secure</td>
+</tr>
+<tr>
+<td>ER6</td>
+<td>The site must allow future additions of new projects and new skills</td>
+</tr>
+<tr>
+<td>ER7</td>
+<td>Access to information must be fast and intuitive</td>
+</tr>
+<tr>
+<td>ER8</td>
+<td>Each project must expose context, objectives, technical stack, features, role and outcomes</td>
+</tr>
+<tr>
+<td>ER9</td>
+<td>The resume must be downloadable as a PDF in both languages</td>
+</tr>
+<tr>
+<td>ER10</td>
+<td>Contact details, social links and an availability statement must be reachable from every page</td>
+</tr>
+</tbody></table>
+<h2 id="s22">E4. Non-functional requirements</h2>
+<p>Performance: Lighthouse ≥ 90 in all four categories, LCP &lt; 2.5 s, CLS &lt; 0.1, home page under 1 MB, modern responsive image formats, minimal client-side JavaScript.</p>
+<p>SEO: unique titles and meta descriptions per page and per language, clean hierarchical URLs per language, correct <code>hreflang</code> pairs, schema.org structured data, generated <code>sitemap.xml</code> and <code>robots.txt</code>, Open Graph tags, a single <code>h1</code> per page.</p>
+<p>Accessibility: WCAG 2.1 AA target on primary journeys, compliant colour contrast, full keyboard navigation with visible focus, semantic structure, meaningful alternative text, labelled form fields with announced errors, <code>prefers-reduced-motion</code> support, declared document language.</p>
+<p>Compatibility: breakpoints at 360 / 768 / 1024 / 1440 px, last two major versions of Chrome, Firefox, Safari and Edge, iOS Safari and Android Chrome, touch targets ≥ 44 × 44 px, readable up to 200 % zoom.</p>
+<p>Security and privacy: HTTPS with HTTP→HTTPS redirect and HSTS, validated and sanitised form input, header injection and spam protection, security headers (CSP, <code>X-Content-Type-Options</code>, <code>Referrer-Policy</code>), no secrets committed to the repository, up-to-date dependencies, GDPR-compliant form notice, cookieless analytics or a compliant consent banner, published privacy policy and legal notices.</p>
+<h2 id="s23">E5. Recommended technical stack</h2>
+<p><strong>Astro 5</strong> with fully static output, <strong>Tailwind CSS 4</strong>, content collections storing one Markdown file per project, native i18n routing (<code>/</code> for French, <code>/en/</code> for English), a <strong>PHP 8 + PHPMailer</strong> contact endpoint hosted on o2switch, honeypot and rate limiting with optional Cloudflare Turnstile, privacy-friendly analytics (Plausible or self-hosted Umami), Git and GitHub for version control, GitHub Actions for build and FTP deployment, o2switch shared hosting with Let&#39;s Encrypt SSL.</p>
+<p>Alternatives considered: Next.js with static export (viable if React expertise or future application work justifies it), React + Vite SPA (not recommended for SEO), vanilla HTML/CSS/JS (only for the most constrained Scenario A), WordPress (relevant if a blog and heavy content management become priorities).</p>
+<p>o2switch constraint: no Node.js runtime in production, so the site is built locally or in CI and deployed as static files; PHP 8 is available for the contact form. Note that PHP is not required for the site itself.</p>
+<h2 id="s24">E6. Timeline</h2>
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>Phase</th>
+<th>Deliverable</th>
+<th>Milestone</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Scoping</td>
+<td>Scoping note and sitemap</td>
+<td><strong>V1 — Scoping approved</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Design</td>
+<td>Figma mockups and design system</td>
+<td><strong>V2 — Design approved</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Development</td>
+<td>Home, About</td>
+<td>—</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Development</td>
+<td>Skills, Projects, Project detail, Services</td>
+<td>—</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Integration</td>
+<td>FR/EN content, resume, contact form, 404</td>
+<td><strong>V3 — Functional acceptance</strong></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Quality</td>
+<td>Testing, accessibility, SEO, performance, fixes</td>
+<td>—</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Launch</td>
+<td>o2switch deployment, DNS, SSL, analytics, documentation, handover</td>
+<td><strong>V4 — Final acceptance and go-live</strong></td>
+</tr>
+</tbody></table>
+<p>Two rounds of revisions are included per milestone. Content must be supplied in week 1; technical access in week 2; approvals within 5 business days.</p>
+<h2 id="s25">E7. Budget</h2>
+<p>Reference day rate: <strong>€400 excluding tax per person-day</strong> (mid-level profile, France). Junior profile €280–330; senior profile €500–600. Rates valid for 30 days.</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Scope</th>
+<th>Person-days</th>
+<th>Amount (excl. tax)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A — Essential showcase</td>
+<td>5 sections, bilingual, responsive, contact form</td>
+<td>13.5</td>
+<td>€5,400</td>
+</tr>
+<tr>
+<td><strong>B — Full bilingual portfolio (recommended)</strong></td>
+<td>Entire functional scope, project case pages, services, bilingual resume, filters</td>
+<td>24</td>
+<td>€9,600</td>
+</tr>
+<tr>
+<td>C — Augmented portfolio</td>
+<td>Scenario B plus technical blog, lightweight CMS, booking, animations</td>
+<td>37.5</td>
+<td>€15,000</td>
+</tr>
+</tbody></table>
+<p>Optional extras priced per unit: technical blog €1,600–2,400 · detailed case study per project €200–400 · testimonials module €400 · lightweight CMS €1,200–2,000 · subtle animations €600 · appointment booking €200–400 · editorial copywriting €1,200–1,600 · professional translation €600–800 · logo and brand identity €800–1,200 · visual and mockup production €400–800 · third language €800 · pricing page €400.</p>
+<p>Recurring costs paid directly by the Client: o2switch shared hosting €60–110 per year · domain name €10–15 per year · Let&#39;s Encrypt SSL included · analytics around €100 per year (or free when self-hosted) · optional maintenance €80 per month.</p>
+<p>Payment terms: 30 % on signature, 40 % on design approval (V2), 30 % on final acceptance (V4), payable within 30 days. Late payment incurs statutory interest plus a €40 fixed indemnity. Intellectual property rights transfer to the Client upon full payment. A 30-day warranty covers defects attributable to the Provider.</p>
+<h2 id="s26">E8. Success criteria</h2>
+<p>The website clearly presents the developer&#39;s profile · projects are showcased professionally · navigation is simple and efficient, with contact reachable in two clicks or fewer · the site is performant and responsive, scoring at least 90 on every Lighthouse category · the bilingual version is consistent and complete, with full FR/EN parity · the site helps generate qualified contact opportunities, targeting at least three inbound contacts per month after six months.</p>
+<h2 id="s27">E9. English validation</h2>
+<p>This project brief provides a structured foundation for the website project. It may be expanded or simplified depending on ambition level, budget, timeline and selected tools. Any change to the agreed scope requires a signed written amendment.</p>
+<p><strong>Selected scenario:</strong> ☐ A — Essential showcase  ☐ B — Full portfolio  ☐ C — Augmented portfolio</p>
+<p><strong>Selected options:</strong> ................................................................</p>
+<p><strong>Total contractual amount:</strong> € .................... excl. tax</p>
+<p><strong>Contractual lead time:</strong> .................... weeks from down payment</p>
+<h3>For the Client</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Name and role</td>
+<td>............................................................</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>............................................................</td>
+</tr>
+<tr>
+<td>Place</td>
+<td>............................................................</td>
+</tr>
+<tr>
+<td>Signature</td>
+<td>............................................................</td>
+</tr>
+</tbody></table>
+<h3>For the Provider</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Name and role</td>
+<td>............................................................</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>............................................................</td>
+</tr>
+<tr>
+<td>Place</td>
+<td>............................................................</td>
+</tr>
+<tr>
+<td>Signature</td>
+<td>............................................................</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>Fin du document / End of document — CDC-PORTFOLIO-2025-01, version 1.0</em></p>
+
+  <div class="doc-footer">CDC-PORTFOLIO-2025-01 — version 1.0 — document de cadrage contractuel</div>
+</div>
+</body>
+</html>
