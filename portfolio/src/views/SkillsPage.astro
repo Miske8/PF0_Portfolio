@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Badge from '../components/Badge.astro';
+import Button from '../components/Button.astro';
+import Icon from '../components/Icon.astro';
+import { skillGroups, coreStack } from '../data/skills';
+import { site } from '../data/site';
+import { useTranslations, localizePath, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const levelLabelKey = {
+  advanced: 'skills.level.advanced',
+  intermediate: 'skills.level.intermediate',
+  learning: 'skills.level.learning',
+} as const;
+
+const description =
+  lang === 'fr'
+    ? 'Compétences front-end, back-end, outils et savoir-être : les technologies maîtrisées et le niveau de pratique associé.'
+    : 'Front-end, back-end, tooling and soft skills: the technologies I use and the level of practice for each.';
+---
+
+<BaseLayout
+  lang={lang}
+  title={t('skills.title')}
+  description={description}
+  routeKey="skills"
+>
+  <Section>
+    <SectionHeading
+      eyebrow={t('home.eyebrow')}
+      title={t('skills.title')}
+      description={t('skills.intro')}
+      level={1}
+    />
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-2">
+      {
+        skillGroups.map((group) => (
+          <section class="surface-card p-6 sm:p-7">
+            <header class="flex items-center gap-3">
+              <span
+                class="grid size-10 place-items-center rounded-xl bg-brand-50 text-brand-700 dark:bg-ink-900 dark:text-brand-300"
+                aria-hidden="true"
+              >
+                <Icon name={group.icon} size={20} />
+              </span>
+              <h2 class="text-lg font-bold">{t(group.titleKey)}</h2>
+            </header>
+
+            <ul class="mt-5 flex flex-wrap gap-2">
+              {group.skills.map((skill) => (
+                <li>
+                  <Badge variant={skill.level === 'advanced' ? 'brand' : 'outline'} size="md">
+                    {skill.label[lang]}
+                  </Badge>
+                </li>
+              ))}
+            </ul>
+
+            {group.skills.some((skill) => skill.level) && (
+              <dl class="mt-6 space-y-2.5 border-t hairline pt-5 text-sm">
+                {(['advanced', 'intermediate', 'learning'] as const).map((level) => {
+                  const matches = group.skills.filter((skill) => skill.level === level);
+                  if (matches.length === 0) return null;
+                  return (
+                    <div class="flex gap-3">
+                      <dt class="w-28 shrink-0 font-medium text-muted">{t(levelLabelKey[level])}</dt>
+                      <dd class="text-muted">{matches.map((skill) => skill.label[lang]).join(' · ')}</dd>
+                    </div>
+                  );
+                })}
+              </dl>
+            )}
+          </section>
+        ))
+      }
+    </div>
+
+    <!-- Bandeau de synthèse -->
+    <div class="surface-card mt-12 flex flex-col gap-6 p-8 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h2 class="text-lg font-bold">{t('home.stack.title')}</h2>
+        <ul class="mt-4 flex flex-wrap gap-2">
+          {coreStack.map((tech) => <li><Badge variant="outline">{tech}</Badge></li>)}
+        </ul>
+      </div>
+      <Button href={localizePath('projects', lang)} icon="arrow-right" class="shrink-0">
+        {t('cta.viewProjects')}
+      </Button>
+    </div>
+
+    <p class="mt-8 max-w-3xl text-sm leading-relaxed text-muted">
+      {
+        lang === 'fr'
+          ? 'Les niveaux indiqués reflètent une pratique réelle en contexte professionnel ou sur projet complet. Les technologies marquées « en progression » font l’objet d’une pratique régulière mais n’ont pas encore été mises en œuvre sur un projet livré.'
+          : 'The levels above reflect hands-on practice in a professional or full-project context. Technologies marked “improving” are used regularly but have not yet shipped on a delivered project.'
+      }
+    </p>
+
+    <div class="mt-8">
+      <Button href={`mailto:${site.email}`} variant="secondary" icon="mail" iconPosition="left">
+        {t('cta.getInTouch')}
+      </Button>
+    </div>
+  </Section>
+</BaseLayout>

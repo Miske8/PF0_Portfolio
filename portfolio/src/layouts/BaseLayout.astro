@@ -1,0 +1,133 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+import { routes, useTranslations, type Lang, type RouteKey } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  /** Titre de la page, sans le nom du site (ajouté automatiquement). */
+  title: string;
+  description: string;
+  routeKey?: RouteKey;
+  /** Chemin de la version traduite pour les pages dynamiques. */
+  alternatePath?: string;
+  /** Image de partage social, chemin absolu depuis la racine du site. */
+  ogImage?: string;
+  noindex?: boolean;
+  /** Données structurées JSON-LD supplémentaires. */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  lang,
+  title,
+  description,
+  routeKey,
+  alternatePath,
+  ogImage = '/images/og-default.png',
+  noindex = false,
+  jsonLd,
+} = Astro.props;
+
+const t = useTranslations(lang);
+const siteName = `${site.author} — ${site.jobTitle[lang]}`;
+const fullTitle = title === siteName ? title : `${title} | ${site.author}`;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImageUrl = new URL(ogImage, Astro.site).href;
+
+/**
+ * Liens hreflang : la version française et la version anglaise de la page.
+ * `alternatePath` est utilisé pour les pages dynamiques, dont l'URL diffère
+ * d'une langue à l'autre.
+ */
+const frUrl = new URL(
+  routeKey ? routes[routeKey].fr : (alternatePath ?? Astro.url.pathname),
+  Astro.site
+).href;
+const enUrl = new URL(
+  routeKey ? routes[routeKey].en : (alternatePath ?? Astro.url.pathname),
+  Astro.site
+).href;
+
+const defaultJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.author,
+  jobTitle: site.jobTitle[lang],
+  email: `mailto:${site.email}`,
+  url: new URL('/', Astro.site).href,
+  sameAs: site.socials.map((social) => social.href),
+};
+
+const jsonLdBlocks = [
+  defaultJsonLd,
+  ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : []),
+];
+---
+
+<!doctype html>
+<html lang={lang} dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Versions linguistiques -->
+    <link rel="alternate" hreflang="fr" href={frUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={frUrl} />
+
+    <!-- Partage social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.author} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_GB'} />
+    <meta property="og:locale:alternate" content={lang === 'fr' ? 'en_GB' : 'fr_FR'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Icônes et thème -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b1020" media="(prefers-color-scheme: dark)" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta name="author" content={site.author} />
+
+    {
+      jsonLdBlocks.map((block) => (
+        <script type="application/ld+json" set:html={JSON.stringify(block)} />
+      ))
+    }
+  </head>
+
+  <body class="flex min-h-screen flex-col">
+    <a href="#main" class="skip-link">{t('a11y.skipToContent')}</a>
+
+    <Header lang={lang} routeKey={routeKey} alternatePath={alternatePath} />
+
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+
+    <Footer lang={lang} />
+
+    <slot name="scripts" />
+  </body>
+</html>

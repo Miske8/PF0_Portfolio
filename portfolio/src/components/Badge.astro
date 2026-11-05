@@ -1,0 +1,29 @@
+---
+/**
+ * Badge de technologie ou d'information.
+ */
+interface Props {
+  variant?: 'default' | 'brand' | 'outline';
+  size?: 'sm' | 'md';
+  class?: string;
+}
+
+const { variant = 'default', size = 'sm', class: className = '' } = Astro.props;
+
+const variants = {
+  default: 'bg-muted-surface text-[var(--text-secondary)] border-transparent',
+  brand: 'bg-brand-50 text-brand-700 border-brand-100 dark:bg-ink-900 dark:text-brand-300 dark:border-ink-800',
+  outline: 'bg-transparent text-[var(--text-secondary)] border-[var(--border-subtle)]',
+};
+
+const sizes = {
+  sm: 'px-2.5 py-1 text-xs',
+  md: 'px-3 py-1.5 text-sm',
+};
+---
+
+<span
+  class={`inline-flex items-center gap-1.5 rounded-full border font-medium ${variants[variant]} ${sizes[size]} ${className}`}
+>
+  <slot />
+</span>

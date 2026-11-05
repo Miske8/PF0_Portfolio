@@ -1,0 +1,171 @@
+---
+import { useTranslations, localizePath, type Lang, type RouteKey, type UIKey } from '../i18n/utils';
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+import LangSwitcher from './LangSwitcher.astro';
+
+interface Props {
+  lang: Lang;
+  routeKey?: RouteKey;
+  alternatePath?: string;
+}
+
+const { lang, routeKey, alternatePath } = Astro.props;
+const t = useTranslations(lang);
+
+/** Normalise le chemin courant pour comparer les entrées de navigation. */
+const normalize = (value: string) => value.replace(/\/+$/, '') || '/';
+const currentPath = normalize(Astro.url.pathname);
+
+const navItems: { key: RouteKey; labelKey: UIKey }[] = [
+  { key: 'home', labelKey: 'nav.home' },
+  { key: 'about', labelKey: 'nav.about' },
+  { key: 'skills', labelKey: 'nav.skills' },
+  { key: 'projects', labelKey: 'nav.projects' },
+  { key: 'services', labelKey: 'nav.services' },
+  { key: 'resume', labelKey: 'nav.resume' },
+];
+
+const isActive = (key: RouteKey) => {
+  const target = normalize(localizePath(key, lang));
+  if (key === 'home') return currentPath === '/' || currentPath === '/en';
+  return currentPath === target || currentPath.startsWith(`${target}/`);
+};
+---
+
+<header
+  class="sticky top-0 z-50 border-b hairline bg-[color-mix(in_oklab,var(--surface)_88%,transparent)] backdrop-blur-md"
+>
+  <div class="container-page flex h-16 items-center justify-between gap-4">
+    <!-- Identité -->
+    <a
+      href={localizePath('home', lang)}
+      class="flex shrink-0 items-center gap-2.5 font-bold tracking-tight"
+      aria-label={lang === 'fr' ? 'Retour à l’accueil' : 'Back to home'}
+    >
+      <span
+        class="grid size-9 place-items-center rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 text-sm font-extrabold text-white"
+        aria-hidden="true">{site.initials}</span
+      >
+      <span class="hidden text-[0.95rem] sm:block">{site.author}</span>
+    </a>
+
+    <!-- Navigation principale (desktop) -->
+    <nav class="hidden lg:block" aria-label={t('nav.main')}>
+      <ul class="flex items-center gap-1">
+        {
+          navItems.map(({ key, labelKey }) => (
+            <li>
+              <a
+                href={localizePath(key, lang)}
+                aria-current={isActive(key) ? 'page' : undefined}
+                class={`rounded-lg px-3 py-2 text-sm font-medium transition ${
+                  isActive(key)
+                    ? 'bg-brand-50 text-brand-700 dark:bg-ink-900 dark:text-brand-300'
+                    : 'text-[var(--text-secondary)] hover:bg-brand-50 hover:text-brand-700 dark:hover:bg-ink-900 dark:hover:text-brand-300'
+                }`}
+              >
+                {t(labelKey)}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-2">
+      <LangSwitcher lang={lang} routeKey={routeKey} alternatePath={alternatePath} />
+
+      <a
+        href={localizePath('contact', lang)}
+        class="hidden rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 sm:inline-flex"
+      >
+        {t('cta.getInTouch')}
+      </a>
+
+      <button
+        type="button"
+        id="menu-toggle"
+        class="grid size-10 place-items-center rounded-lg border hairline text-[var(--text-primary)] lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label={t('a11y.openMenu')}
+        data-open-label={t('a11y.openMenu')}
+        data-close-label={t('a11y.closeMenu')}
+      >
+        <Icon name="menu" size={20} class="menu-icon-open" />
+        <Icon name="close" size={20} class="menu-icon-close hidden" />
+      </button>
+    </div>
+  </div>
+
+  <!-- Navigation mobile -->
+  <nav
+    id="mobile-menu"
+    class="hidden border-t hairline bg-[var(--surface)] lg:hidden"
+    aria-label={t('nav.main')}
+  >
+    <ul class="container-page flex flex-col gap-1 py-4">
+      {
+        navItems.map(({ key, labelKey }) => (
+          <li>
+            <a
+              href={localizePath(key, lang)}
+              aria-current={isActive(key) ? 'page' : undefined}
+              class={`block rounded-lg px-3 py-2.5 text-[0.95rem] font-medium ${
+                isActive(key)
+                  ? 'bg-brand-50 text-brand-700 dark:bg-ink-900 dark:text-brand-300'
+                  : 'text-[var(--text-secondary)]'
+              }`}
+            >
+              {t(labelKey)}
+            </a>
+          </li>
+        ))
+      }
+      <li class="pt-2">
+        <a
+          href={localizePath('contact', lang)}
+          class="block rounded-lg bg-brand-600 px-4 py-3 text-center text-[0.95rem] font-semibold text-white"
+        >
+          {t('cta.getInTouch')}
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  // Menu mobile : ~15 lignes de JS, chargées uniquement côté client.
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  if (toggle && menu) {
+    const openIcon = toggle.querySelector('.menu-icon-open');
+    const closeIcon = toggle.querySelector('.menu-icon-close');
+
+    const setExpanded = (expanded: boolean) => {
+      toggle.setAttribute('aria-expanded', String(expanded));
+      toggle.setAttribute(
+        'aria-label',
+        (expanded ? toggle.dataset.closeLabel : toggle.dataset.openLabel) ?? ''
+      );
+      menu.classList.toggle('hidden', !expanded);
+      openIcon?.classList.toggle('hidden', expanded);
+      closeIcon?.classList.toggle('hidden', !expanded);
+    };
+
+    toggle.addEventListener('click', () => {
+      setExpanded(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // Referme le menu lors d'un changement de taille ou avec Échap.
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 1024) setExpanded(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setExpanded(false);
+    });
+  }
+</script>

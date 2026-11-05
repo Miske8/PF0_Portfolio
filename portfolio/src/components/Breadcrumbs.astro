@@ -1,0 +1,53 @@
+---
+import { useTranslations, type Lang } from '../i18n/utils';
+import Icon from './Icon.astro';
+
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: Crumb[];
+  lang: Lang;
+}
+
+const { items, lang } = Astro.props;
+const t = useTranslations(lang);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.label,
+    ...(item.href ? { item: new URL(item.href, Astro.site).href } : {}),
+  })),
+};
+---
+
+<nav aria-label={t('a11y.breadcrumb')} class="text-sm">
+  <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-muted">
+    {
+      items.map((item, index) => (
+        <li class="flex items-center gap-2">
+          {item.href && index < items.length - 1 ? (
+            <a href={item.href} class="transition hover:text-brand-700 dark:hover:text-brand-300">
+              {item.label}
+            </a>
+          ) : (
+            <span aria-current="page" class="font-medium text-[var(--text-primary)]">
+              {item.label}
+            </span>
+          )}
+          {index < items.length - 1 && (
+            <Icon name="arrow-right" size={14} class="text-ink-400" />
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
