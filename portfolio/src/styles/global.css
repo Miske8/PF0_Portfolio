@@ -1,0 +1,274 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Design system — Portfolio développeur
+   Palette sobre : une couleur d'accent, une échelle de neutres, contrastes AA.
+   Le mode sombre suit automatiquement les préférences du système.
+--------------------------------------------------------------------------- */
+
+@theme {
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  /* Accent */
+  --color-brand-50: oklch(0.97 0.014 254);
+  --color-brand-100: oklch(0.94 0.03 254);
+  --color-brand-200: oklch(0.88 0.06 254);
+  --color-brand-300: oklch(0.8 0.1 254);
+  --color-brand-400: oklch(0.7 0.15 254);
+  --color-brand-500: oklch(0.62 0.19 254);
+  --color-brand-600: oklch(0.55 0.21 254);
+  --color-brand-700: oklch(0.48 0.19 254);
+  --color-brand-800: oklch(0.4 0.15 254);
+  --color-brand-900: oklch(0.33 0.11 254);
+
+  /* Neutres */
+  --color-ink-50: oklch(0.98 0.004 250);
+  --color-ink-100: oklch(0.96 0.006 250);
+  --color-ink-200: oklch(0.92 0.008 250);
+  --color-ink-300: oklch(0.86 0.01 250);
+  --color-ink-400: oklch(0.7 0.014 250);
+  --color-ink-500: oklch(0.58 0.016 250);
+  --color-ink-600: oklch(0.47 0.017 250);
+  --color-ink-700: oklch(0.38 0.018 250);
+  --color-ink-800: oklch(0.28 0.02 255);
+  --color-ink-900: oklch(0.21 0.024 258);
+  --color-ink-950: oklch(0.15 0.026 260);
+
+  --radius-card: 0.875rem;
+
+  --shadow-soft: 0 1px 2px oklch(0.15 0.026 260 / 0.04), 0 8px 24px oklch(0.15 0.026 260 / 0.06);
+  --shadow-lift: 0 2px 4px oklch(0.15 0.026 260 / 0.05), 0 16px 40px oklch(0.15 0.026 260 / 0.1);
+}
+
+/* ------------------------------- Base ------------------------------------ */
+
+@layer base {
+  :root {
+    --surface: var(--color-white);
+    --surface-muted: var(--color-ink-50);
+    --surface-raised: var(--color-white);
+    --border-subtle: var(--color-ink-200);
+    --text-primary: var(--color-ink-900);
+    --text-secondary: var(--color-ink-600);
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --surface: var(--color-ink-950);
+      --surface-muted: var(--color-ink-900);
+      --surface-raised: oklch(0.19 0.024 258);
+      --border-subtle: oklch(0.3 0.02 258);
+      --text-primary: var(--color-ink-50);
+      --text-secondary: var(--color-ink-300);
+      color-scheme: dark;
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background-color: var(--surface);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Indicateur de focus visible et homogène (WCAG 2.4.7) */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+    letter-spacing: -0.015em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-200);
+    color: var(--color-ink-950);
+  }
+}
+
+/* ---------------------------- Utilitaires -------------------------------- */
+
+@utility container-page {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
+  }
+}
+
+@utility surface-card {
+  background-color: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+}
+
+@utility text-muted {
+  color: var(--text-secondary);
+}
+
+@utility bg-muted-surface {
+  background-color: var(--surface-muted);
+}
+
+@utility hairline {
+  border-color: var(--border-subtle);
+}
+
+/* Lien de saut pour la navigation clavier */
+@utility skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--color-brand-600);
+  color: white;
+  border-radius: 0 0 0.5rem 0;
+  font-weight: 600;
+
+  &:focus {
+    left: 0;
+  }
+}
+
+/* ------------------------- Contenu éditorial ----------------------------- */
+/* Styles appliqués au corps Markdown des fiches projet. */
+
+@layer components {
+  .prose-portfolio {
+    color: var(--text-primary);
+    line-height: 1.75;
+  }
+
+  .prose-portfolio > * + * {
+    margin-top: 1.1em;
+  }
+
+  .prose-portfolio h2 {
+    margin-top: 2.25rem;
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .prose-portfolio h3 {
+    margin-top: 1.75rem;
+    font-size: 1.125rem;
+    font-weight: 650;
+  }
+
+  .prose-portfolio a {
+    color: var(--color-brand-600);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .prose-portfolio a {
+      color: var(--color-brand-300);
+    }
+  }
+
+  .prose-portfolio ul,
+  .prose-portfolio ol {
+    padding-left: 1.4em;
+    list-style: disc;
+  }
+
+  .prose-portfolio ol {
+    list-style: decimal;
+  }
+
+  .prose-portfolio li + li {
+    margin-top: 0.4em;
+  }
+
+  .prose-portfolio code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background-color: var(--surface-muted);
+    border: 1px solid var(--border-subtle);
+    padding: 0.1em 0.4em;
+    border-radius: 0.3em;
+  }
+
+  .prose-portfolio pre {
+    background-color: var(--color-ink-950);
+    color: var(--color-ink-100);
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .prose-portfolio pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: inherit;
+  }
+
+  .prose-portfolio blockquote {
+    border-left: 3px solid var(--color-brand-500);
+    padding-left: 1rem;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+
+  .prose-portfolio table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .prose-portfolio th,
+  .prose-portfolio td {
+    border: 1px solid var(--border-subtle);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  .prose-portfolio img {
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-subtle);
+  }
+}

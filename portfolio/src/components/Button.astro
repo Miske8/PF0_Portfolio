@@ -1,0 +1,65 @@
+---
+/**
+ * Bouton ou lien d'action.
+ * Rendu en <a> si `href` est fourni, en <button> sinon.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'md' | 'lg';
+  icon?: 'arrow-right' | 'download' | 'external-link' | 'mail' | 'github';
+  iconPosition?: 'left' | 'right';
+  external?: boolean;
+  type?: 'button' | 'submit';
+  class?: string;
+  id?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  icon,
+  iconPosition = 'right',
+  external = false,
+  type = 'button',
+  class: className = '',
+  id,
+} = Astro.props;
+
+const base =
+  'inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition duration-150 ease-out whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed';
+
+const variants = {
+  primary:
+    'bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-800 shadow-sm hover:shadow-md',
+  secondary:
+    'border border-[var(--border-subtle)] bg-[var(--surface-raised)] text-[var(--text-primary)] hover:border-brand-400 hover:text-brand-700 dark:hover:text-brand-300',
+  ghost: 'text-brand-700 hover:text-brand-800 hover:bg-brand-50 dark:text-brand-300 dark:hover:bg-ink-900',
+};
+
+const sizes = {
+  md: 'px-4 py-2.5 text-sm',
+  lg: 'px-5 py-3 text-[0.9375rem]',
+};
+
+const classes = [base, variants[variant], sizes[size], className].filter(Boolean).join(' ');
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  class={classes}
+  id={id}
+  {...href
+    ? {
+        href,
+        ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}),
+      }
+    : { type }}
+>
+  {icon && iconPosition === 'left' && <Icon name={icon} size={17} />}
+  <span><slot /></span>
+  {icon && iconPosition === 'right' && <Icon name={icon} size={17} />}
+</Tag>

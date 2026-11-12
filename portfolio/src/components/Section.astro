@@ -1,0 +1,24 @@
+---
+/**
+ * Section de page : gère l'espacement vertical et la largeur de contenu.
+ */
+interface Props {
+  /** Fond légèrement contrasté pour alterner le rythme visuel. */
+  muted?: boolean;
+  class?: string;
+  id?: string;
+  /** Largeur réduite pour les contenus éditoriaux longs. */
+  narrow?: boolean;
+}
+
+const { muted = false, class: className = '', id, narrow = false } = Astro.props;
+---
+
+<section
+  id={id}
+  class={`py-16 sm:py-20 lg:py-24 ${muted ? 'bg-muted-surface border-y hairline' : ''} ${className}`}
+>
+  <div class={`container-page ${narrow ? 'max-w-3xl' : ''}`}>
+    <slot />
+  </div>
+</section>

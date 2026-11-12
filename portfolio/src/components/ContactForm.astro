@@ -1,0 +1,273 @@
+---
+import { useTranslations, type Lang } from '../i18n/utils';
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const endpoint = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/api/contact.php`;
+
+// Messages transmis au script client via des attributs de données :
+// aucune chaîne n'est codée en dur dans le JavaScript.
+const messages = {
+  success: t('contact.success'),
+  generic: t('contact.error.generic'),
+  name: t('contact.error.name'),
+  email: t('contact.error.email'),
+  message: t('contact.error.message'),
+  sending: t('contact.submit.loading'),
+  submit: t('contact.submit'),
+};
+---
+
+<form
+  id="contact-form"
+  class="surface-card p-6 sm:p-8"
+  method="post"
+  action={endpoint}
+  novalidate
+  data-endpoint={endpoint}
+  data-success={messages.success}
+  data-error-generic={messages.generic}
+  data-error-name={messages.name}
+  data-error-email={messages.email}
+  data-error-message={messages.message}
+  data-label-sending={messages.sending}
+  data-label-submit={messages.submit}
+>
+  <h2 class="text-xl font-bold">{t('contact.form.title')}</h2>
+
+  <div class="mt-6 grid gap-5 sm:grid-cols-2">
+    <!-- Nom -->
+    <div class="sm:col-span-1">
+      <label for="name" class="block text-sm font-semibold">
+        {t('contact.field.name')}
+        <span class="font-normal text-muted">({t('contact.field.required')})</span>
+      </label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        autocomplete="name"
+        maxlength="80"
+        placeholder={t('contact.field.namePlaceholder')}
+        aria-describedby="name-error"
+        class="mt-2 w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)] px-3.5 py-2.5 text-sm outline-none transition placeholder:text-ink-400 focus:border-brand-500"
+      />
+      <p id="name-error" class="mt-1.5 hidden text-xs font-medium text-red-600" role="alert"></p>
+    </div>
+
+    <!-- E-mail -->
+    <div class="sm:col-span-1">
+      <label for="email" class="block text-sm font-semibold">
+        {t('contact.field.email')}
+        <span class="font-normal text-muted">({t('contact.field.required')})</span>
+      </label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        autocomplete="email"
+        maxlength="120"
+        placeholder={t('contact.field.emailPlaceholder')}
+        aria-describedby="email-error"
+        class="mt-2 w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)] px-3.5 py-2.5 text-sm outline-none transition placeholder:text-ink-400 focus:border-brand-500"
+      />
+      <p id="email-error" class="mt-1.5 hidden text-xs font-medium text-red-600" role="alert"></p>
+    </div>
+
+    <!-- Sujet -->
+    <div class="sm:col-span-2">
+      <label for="subject" class="block text-sm font-semibold">
+        {t('contact.field.subject')}
+        <span class="font-normal text-muted">({t('contact.field.optional')})</span>
+      </label>
+      <input
+        type="text"
+        id="subject"
+        name="subject"
+        maxlength="120"
+        placeholder={t('contact.field.subjectPlaceholder')}
+        class="mt-2 w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)] px-3.5 py-2.5 text-sm outline-none transition placeholder:text-ink-400 focus:border-brand-500"
+      />
+    </div>
+
+    <!-- Message -->
+    <div class="sm:col-span-2">
+      <label for="message" class="block text-sm font-semibold">
+        {t('contact.field.message')}
+        <span class="font-normal text-muted">({t('contact.field.required')})</span>
+      </label>
+      <textarea
+        id="message"
+        name="message"
+        required
+        rows="6"
+        minlength="10"
+        maxlength="4000"
+        placeholder={t('contact.field.messagePlaceholder')}
+        aria-describedby="message-error"
+        class="mt-2 w-full resize-y rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)] px-3.5 py-2.5 text-sm leading-relaxed outline-none transition placeholder:text-ink-400 focus:border-brand-500"
+      ></textarea>
+      <p id="message-error" class="mt-1.5 hidden text-xs font-medium text-red-600" role="alert"></p>
+    </div>
+  </div>
+
+  {/*
+    Champ piège anti-spam : invisible pour un humain, souvent rempli par les
+    robots. S'il contient une valeur, l'envoi est silencieusement ignoré.
+  */}
+  <div class="absolute -left-[9999px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+    <label for="website">Website</label>
+    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <input type="hidden" name="lang" value={lang} />
+  <input type="hidden" name="startedAt" value={Date.now()} />
+
+  <p class="mt-6 text-xs leading-relaxed text-muted">{t('contact.consent')}</p>
+
+  <div class="mt-6 flex flex-wrap items-center gap-4">
+    <button
+      type="submit"
+      id="contact-submit"
+      class="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-60"
+    >
+      <Icon name="mail" size={17} />
+      <span data-submit-label>{t('contact.submit')}</span>
+    </button>
+
+    <a
+      href={`mailto:${site.email}`}
+      class="text-sm font-medium text-muted transition hover:text-brand-700 dark:hover:text-brand-300"
+    >
+      {t('contact.direct')} — {site.email}
+    </a>
+  </div>
+
+  <!-- Zone d'annonce des statuts (lecteurs d'écran) -->
+  <div
+    id="contact-status"
+    class="mt-5 hidden rounded-lg border px-4 py-3 text-sm font-medium"
+    role="status"
+    aria-live="polite"
+  >
+  </div>
+</form>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+
+  if (form) {
+    const status = document.getElementById('contact-status') as HTMLElement;
+    const submit = document.getElementById('contact-submit') as HTMLButtonElement;
+    const submitLabel = submit?.querySelector('[data-submit-label]') as HTMLElement | null;
+
+    const endpoint = form.dataset.endpoint ?? '/api/contact.php';
+
+    const showFieldError = (field: HTMLInputElement | HTMLTextAreaElement, message: string) => {
+      const errorEl = document.getElementById(`${field.id}-error`);
+      field.setAttribute('aria-invalid', 'true');
+      field.classList.add('border-red-500');
+      if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.classList.remove('hidden');
+      }
+    };
+
+    const clearFieldError = (field: HTMLInputElement | HTMLTextAreaElement) => {
+      const errorEl = document.getElementById(`${field.id}-error`);
+      field.removeAttribute('aria-invalid');
+      field.classList.remove('border-red-500');
+      errorEl?.classList.add('hidden');
+    };
+
+    const setStatus = (message: string, variant: 'success' | 'error') => {
+      if (!status) return;
+      status.textContent = message;
+      status.classList.remove('hidden', 'border-green-300', 'bg-green-50', 'text-green-800', 'border-red-300', 'bg-red-50', 'text-red-800');
+      status.classList.add(
+        ...(variant === 'success'
+          ? ['border-green-300', 'bg-green-50', 'text-green-800']
+          : ['border-red-300', 'bg-red-50', 'text-red-800'])
+      );
+    };
+
+    const field = (name: string) =>
+      form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | null;
+
+    const validate = () => {
+      let firstInvalid: HTMLElement | null = null;
+      const name = field('name');
+      const email = field('email');
+      const message = field('message');
+
+      [name, email, message].forEach((el) => el && clearFieldError(el));
+
+      if (name && name.value.trim().length < 2) {
+        showFieldError(name, form.dataset.errorName ?? '');
+        firstInvalid = firstInvalid ?? name;
+      }
+
+      const emailValue = email?.value.trim() ?? '';
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailValue)) {
+        showFieldError(email, form.dataset.errorEmail ?? '');
+        firstInvalid = firstInvalid ?? email;
+      }
+
+      if (message && message.value.trim().length < 10) {
+        showFieldError(message, form.dataset.errorMessage ?? '');
+        firstInvalid = firstInvalid ?? message;
+      }
+
+      firstInvalid?.focus();
+      return firstInvalid === null;
+    };
+
+    form.addEventListener('input', (event) => {
+      const target = event.target as HTMLInputElement | HTMLTextAreaElement;
+      if (target?.id && ['name', 'email', 'message'].includes(target.id)) clearFieldError(target);
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!validate()) return;
+
+      const label = submitLabel?.textContent ?? '';
+      submit.disabled = true;
+      if (submitLabel) submitLabel.textContent = form.dataset.labelSending ?? label;
+      status?.classList.add('hidden');
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+
+        const payload = (await response.json().catch(() => ({}))) as {
+          ok?: boolean;
+          error?: string;
+        };
+
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'send_failed');
+        }
+
+        form.reset();
+        setStatus(form.dataset.success ?? '', 'success');
+      } catch {
+        setStatus(form.dataset.errorGeneric ?? '', 'error');
+      } finally {
+        submit.disabled = false;
+        if (submitLabel) submitLabel.textContent = label;
+      }
+    });
+  }
+</script>

@@ -1,0 +1,57 @@
+---
+/**
+ * Sélecteur de langue FR / EN.
+ * Reste sur la page équivalente : `routeKey` couvre les pages statiques,
+ * `alternatePath` les pages dynamiques (fiches projet).
+ */
+import { languages, routes, type Lang, type RouteKey } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  routeKey?: RouteKey;
+  /** Chemin de la page équivalente dans l'autre langue (pages dynamiques). */
+  alternatePath?: string;
+  class?: string;
+}
+
+const { lang, routeKey = 'home', alternatePath, class: className = '' } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+const hrefs: Record<Lang, string> = {
+  fr: lang === 'fr' ? currentPath : (alternatePath ?? routes[routeKey].fr),
+  en: lang === 'en' ? currentPath : (alternatePath ?? routes[routeKey].en),
+};
+
+const order: Lang[] = ['fr', 'en'];
+const shortLabel: Record<Lang, string> = { fr: 'FR', en: 'EN' };
+const fullLabel: Record<Lang, string> = { fr: 'Français', en: 'English' };
+---
+
+<div
+  class={`inline-flex items-center rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-raised)] p-0.5 ${className}`}
+  role="group"
+  aria-label={lang === 'fr' ? 'Changer de langue' : 'Switch language'}
+>
+  {
+    order.map((code) => {
+      const isCurrent = code === lang;
+      return (
+        <a
+          href={hrefs[code]}
+          hreflang={code}
+          lang={code}
+          aria-current={isCurrent ? 'true' : undefined}
+          title={fullLabel[code]}
+          class={`rounded-[0.4rem] px-2.5 py-1 text-xs font-semibold uppercase tracking-wide transition ${
+            isCurrent
+              ? 'bg-brand-600 text-white'
+              : 'text-[var(--text-secondary)] hover:bg-brand-50 hover:text-brand-700 dark:hover:bg-ink-900 dark:hover:text-brand-300'
+          }`}
+        >
+          {shortLabel[code]}
+          <span class="sr-only"> — {languages[code]}</span>
+        </a>
+      );
+    })
+  }
+</div>

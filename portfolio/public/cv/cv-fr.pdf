@@ -1,0 +1,82 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+6 0 obj
+<< /Length 1123 >>
+stream
+BT
+/F1 22 Tf
+1 0 0 1 64 760 Tm
+(CV provisoire  à remplacer) Tj
+/F2 13 Tf
+1 0 0 1 64 726 Tm
+(Prénom Nom  Développeur web & application) Tj
+/F2 12 Tf
+1 0 0 1 64 700 Tm
+() Tj
+/F2 12 Tf
+1 0 0 1 64 676 Tm
+(Ce fichier est un espace reserve livre avec le site.) Tj
+/F2 12 Tf
+1 0 0 1 64 656 Tm
+(Deposez votre CV definitif dans portfolio/public/cv/) Tj
+/F2 12 Tf
+1 0 0 1 64 636 Tm
+(en conservant exactement le nom de fichier cv-fr.pdf.) Tj
+/F2 12 Tf
+1 0 0 1 64 610 Tm
+() Tj
+/F2 12 Tf
+1 0 0 1 64 586 Tm
+(Le lien de telechargement du site pointe vers ce fichier :) Tj
+/F2 12 Tf
+1 0 0 1 64 566 Tm
+(aucune modification de code n est necessaire.) Tj
+/F2 12 Tf
+1 0 0 1 64 540 Tm
+() Tj
+/F1 13 Tf
+1 0 0 1 64 516 Tm
+(Conseils :) Tj
+/F2 12 Tf
+1 0 0 1 64 492 Tm
+(- une page si vous avez moins de 5 ans d experience, deux au maximum) Tj
+/F2 12 Tf
+1 0 0 1 64 472 Tm
+(- exportez en PDF texte \(pas une image\) pour rester lisible par les ATS) Tj
+/F2 12 Tf
+1 0 0 1 64 452 Tm
+(- nommez le fichier cv-prenom-nom.pdf avant de le diffuser) Tj
+/F2 12 Tf
+1 0 0 1 64 432 Tm
+(- verifiez la mise a jour du champ resumeUpdated dans src/data/site.ts) Tj
+ET
+endstream
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000251 00000 n 
+0000000353 00000 n 
+0000000450 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+1625
+%%EOF

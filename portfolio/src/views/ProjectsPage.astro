@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getProjects } from '../lib/projects';
+import { useTranslations, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const projects = await getProjects(lang);
+
+const categories = [
+  { key: 'all', label: t('projects.filter.all') },
+  { key: 'web', label: t('projects.filter.web') },
+  { key: 'application', label: t('projects.filter.application') },
+] as const;
+
+// Seuls les filtres correspondant à au moins un projet sont affichés.
+const availableCategories = categories.filter(
+  (category) =>
+    category.key === 'all' || projects.some((project) => project.data.category === category.key)
+);
+
+const description =
+  lang === 'fr'
+    ? 'Sélection de projets web et applicatifs : contexte, objectifs, stack technique, fonctionnalités, rôle et résultats.'
+    : 'A selection of web and application projects: context, objectives, technical stack, features, role and outcomes.';
+---
+
+<BaseLayout lang={lang} title={t('projects.title')} description={description} routeKey="projects">
+  <Section>
+    <SectionHeading
+      eyebrow={t('home.eyebrow')}
+      title={t('projects.title')}
+      description={t('projects.intro')}
+      level={1}
+    />
+
+    <!-- Filtres : masqués s'il n'y a qu'une seule catégorie de projets -->
+    {
+      availableCategories.length > 2 && (
+        <div class="mt-10 flex flex-wrap items-center gap-3">
+          <span class="text-sm font-medium text-muted" id="filter-label">
+            {t('projects.filterLabel')}
+          </span>
+          <div class="flex flex-wrap gap-2" role="group" aria-labelledby="filter-label">
+            {availableCategories.map((category, index) => (
+              <button
+                type="button"
+                class="project-filter rounded-full border px-4 py-2 text-sm font-semibold transition"
+                data-filter={category.key}
+                aria-pressed={index === 0 ? 'true' : 'false'}
+                data-active-class="border-brand-600 bg-brand-600 text-white"
+                data-inactive-class="border-[var(--border-subtle)] text-[var(--text-secondary)] hover:border-brand-400 hover:text-brand-700 dark:hover:text-brand-300"
+              >
+                {category.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    <ul id="project-list" class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        projects.map((project) => (
+          <li class="flex" data-category={project.data.category}>
+            <ProjectCard project={project} lang={lang} />
+          </li>
+        ))
+      }
+    </ul>
+
+    <p id="project-empty" class="mt-8 hidden text-sm text-muted" role="status">
+      {t('projects.empty')}
+    </p>
+  </Section>
+</BaseLayout>
+
+<script>
+  // Filtrage côté client : sans JavaScript, tous les projets restent visibles.
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.project-filter'));
+  const items = Array.from(document.querySelectorAll<HTMLLIElement>('#project-list > li'));
+  const empty = document.getElementById('project-empty');
+
+  const paint = (button: HTMLButtonElement, active: boolean) => {
+    const on = (button.dataset.activeClass ?? '').split(' ');
+    const off = (button.dataset.inactiveClass ?? '').split(' ');
+    button.classList.remove(...(active ? off : on));
+    button.classList.add(...(active ? on : off));
+    button.setAttribute('aria-pressed', String(active));
+  };
+
+  buttons.forEach((button) => {
+    paint(button, button.dataset.filter === 'all');
+
+    button.addEventListener('click', () => {
+      const filter = button.dataset.filter;
+      buttons.forEach((other) => paint(other, other === button));
+
+      let visible = 0;
+      items.forEach((item) => {
+        const match = filter === 'all' || item.dataset.category === filter;
+        item.classList.toggle('hidden', !match);
+        if (match) visible += 1;
+      });
+
+      empty?.classList.toggle('hidden', visible > 0);
+    });
+  });
+</script>

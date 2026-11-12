@@ -1,0 +1,233 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Badge from '../components/Badge.astro';
+import Button from '../components/Button.astro';
+import Icon from '../components/Icon.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { site } from '../data/site';
+import {
+  projectPath,
+  slugOf,
+  getTranslation,
+  getProjects,
+  type ProjectEntry,
+} from '../lib/projects';
+import { useTranslations, localizePath, categoryLabelKey, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  project: ProjectEntry;
+}
+
+const { lang, project } = Astro.props;
+const t = useTranslations(lang);
+const { data } = project;
+const { Content } = await render(project);
+
+const translation = await getTranslation(project);
+const alternatePath = translation
+  ? projectPath(slugOf(translation), lang === 'fr' ? 'en' : 'fr')
+  : undefined;
+
+const others = (await getProjects(lang))
+  .filter((entry) => entry.id !== project.id)
+  .slice(0, 3);
+
+const coverAlt = data.coverAlt ?? t('project.coverAlt', { title: data.title });
+
+const blocks = [
+  { key: 'project.objectives', items: data.objectives, icon: 'target' as const },
+  { key: 'project.features', items: data.features, icon: 'layers' as const },
+  { key: 'project.results', items: data.results, icon: 'sparkles' as const },
+] as const;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: data.title,
+  description: data.summary,
+  dateCreated: String(data.year),
+  inLanguage: lang === 'fr' ? 'fr-FR' : 'en-US',
+  author: { '@type': 'Person', name: site.author },
+  keywords: data.stack.join(', '),
+  ...(data.demoUrl ? { url: data.demoUrl } : {}),
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={data.title}
+  description={data.summary}
+  alternatePath={alternatePath}
+  ogImage={data.cover ? undefined : '/images/og-default.png'}
+  jsonLd={jsonLd}
+>
+  <Section class="pb-0!">
+    <Breadcrumbs
+      lang={lang}
+      items={[
+        { label: t('nav.home'), href: localizePath('home', lang) },
+        { label: t('nav.projects'), href: localizePath('projects', lang) },
+        { label: data.title },
+      ]}
+    />
+
+    <div class="mt-8 grid gap-12 lg:grid-cols-[1.5fr_1fr] lg:items-start">
+      <div>
+        <div class="flex flex-wrap items-center gap-2">
+          <Badge variant="brand" size="md">{t(categoryLabelKey(data.category))}</Badge>
+          <span class="text-sm font-medium text-muted">{data.year}</span>
+        </div>
+
+        <h1 class="mt-4 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
+          {data.title}
+        </h1>
+        <p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted">{data.summary}</p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          {
+            data.demoUrl && (
+              <Button href={data.demoUrl} external icon="external-link" iconPosition="left">
+                {t('cta.liveDemo')}
+              </Button>
+            )
+          }
+          {
+            data.repoUrl && (
+              <Button
+                href={data.repoUrl}
+                variant="secondary"
+                external
+                icon="github"
+                iconPosition="left"
+              >
+                {t('cta.sourceCode')}
+              </Button>
+            )
+          }
+          {!data.demoUrl && !data.repoUrl && <p class="text-sm text-muted">{t('project.noLink')}</p>}
+        </div>
+      </div>
+
+      <!-- Informations clés -->
+      <dl class="surface-card divide-y hairline overflow-hidden">
+        <div class="flex items-center justify-between gap-6 px-5 py-4">
+          <dt class="text-sm text-muted">{t('project.year')}</dt>
+          <dd class="text-sm font-semibold">{data.year}</dd>
+        </div>
+        {
+          data.duration && (
+            <div class="flex items-center justify-between gap-6 px-5 py-4">
+              <dt class="text-sm text-muted">{t('project.duration')}</dt>
+              <dd class="text-sm font-semibold">{data.duration}</dd>
+            </div>
+          )
+        }
+        <div class="flex items-center justify-between gap-6 px-5 py-4">
+          <dt class="text-sm text-muted">{t('project.category')}</dt>
+          <dd class="text-sm font-semibold">{t(categoryLabelKey(data.category))}</dd>
+        </div>
+        <div class="px-5 py-4">
+          <dt class="text-sm text-muted">{t('project.role')}</dt>
+          <dd class="mt-1.5 text-sm font-medium">{data.role}</dd>
+        </div>
+        <div class="px-5 py-4">
+          <dt class="text-sm text-muted">{t('project.stack')}</dt>
+          <dd class="mt-2 flex flex-wrap gap-1.5">
+            {data.stack.map((tech) => <Badge variant="outline">{tech}</Badge>)}
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    {
+      data.cover && (
+        <div class="surface-card mt-10 overflow-hidden">
+          <Image
+            src={data.cover}
+            alt={coverAlt}
+            widths={[640, 960, 1280, 1600]}
+            sizes="(min-width: 1280px) 1152px, 100vw"
+            loading="eager"
+            fetchpriority="high"
+            class="w-full"
+          />
+        </div>
+      )
+    }
+  </Section>
+
+  <!-- Contexte -->
+  <Section muted class="py-14!">
+    <div class="grid gap-10 lg:grid-cols-3">
+      <h2 class="text-xl font-bold lg:col-span-1">{t('project.context')}</h2>
+      <p class="max-w-2xl leading-relaxed text-muted lg:col-span-2">{data.context}</p>
+    </div>
+  </Section>
+
+  <!-- Objectifs / fonctionnalités / résultats -->
+  <Section>
+    <div class="grid gap-12 lg:grid-cols-3">
+      {
+        blocks.map((block, index) => (
+          <section class={index === 0 ? 'lg:border-r lg:hairline lg:pr-10' : ''}>
+            <h2 class="flex items-center gap-2.5 text-lg font-bold">
+              <Icon name={block.icon} size={19} class="text-brand-600 dark:text-brand-400" />
+              {t(block.key)}
+            </h2>
+            <ul class="mt-5 space-y-3 text-sm">
+              {block.items.map((item) => (
+                <li class="flex gap-2.5">
+                  <Icon
+                    name="check"
+                    size={16}
+                    class="mt-0.5 shrink-0 text-brand-600 dark:text-brand-400"
+                  />
+                  <span class="leading-relaxed text-muted">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- Récit détaillé -->
+  <Section muted>
+    <div class="prose-portfolio mx-auto max-w-3xl">
+      <Content />
+    </div>
+  </Section>
+
+  <!-- Autres projets -->
+  {
+    others.length > 0 && (
+      <Section>
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <h2 class="text-2xl font-bold">{t('project.otherProjects')}</h2>
+          <Button href={localizePath('projects', lang)} variant="ghost" icon="arrow-right">
+            {t('cta.viewAllProjects')}
+          </Button>
+        </div>
+        <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {others.map((entry) => (
+            <li class="flex">
+              <ProjectCard project={entry} lang={lang} compact />
+            </li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
+
+  <div class="container-page pb-16">
+    <Button href={localizePath('projects', lang)} variant="secondary">
+      {t('cta.backToProjects')}
+    </Button>
+  </div>
+</BaseLayout>

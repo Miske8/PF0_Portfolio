@@ -1,0 +1,10 @@
+# robots.txt — Portfolio développeur
+# Adaptez l'URL du sitemap à votre nom de domaine définitif.
+
+User-agent: *
+Allow: /
+
+# Pages techniques à ne pas indexer
+Disallow: /api/
+
+Sitemap: https://www.prenom-nom.fr/sitemap-index.xml
